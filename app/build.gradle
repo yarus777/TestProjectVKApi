@@ -8,7 +8,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "test.project.vkapi"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -23,9 +23,10 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
-    compile 'com.vk:androidsdk:1.6.5'
+    implementation 'com.android.support:support-v4:27.1.1'
     compile 'com.android.support:multidex:1.0.3'
+    implementation project(':core')
 }
