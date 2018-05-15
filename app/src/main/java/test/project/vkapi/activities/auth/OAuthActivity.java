@@ -1,10 +1,9 @@
 package test.project.vkapi.activities.auth;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -12,8 +11,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import test.project.vkapi.R;
+import test.project.vkapi.activities.BaseActivity;
 
-public class OAuthActivity extends AppCompatActivity {
+public class OAuthActivity extends BaseActivity {
     private static final String REDIRECT_URL = "https://oauth.vk.com/blank.html";
     public static final String TOKEN = "access_token";
 
@@ -22,9 +22,10 @@ public class OAuthActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oauth);
         WebView webView = findViewById(R.id.web_view);
+        webView.getSettings().setDomStorageEnabled(true);
 
         webView.setWebViewClient(new WebViewClient() {
-            @Override
+            /*@Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri url = request.getUrl();
                 if(url.getQueryParameter("error") != null) {
@@ -40,6 +41,19 @@ public class OAuthActivity extends AppCompatActivity {
                 }
 
                 return super.shouldOverrideUrlLoading(view, request);
+            }*/
+
+            @Override
+            public void onPageStarted(WebView view, String uri, Bitmap favicon) {
+                super.onPageStarted(view, uri, favicon);
+                if(!uri.startsWith(REDIRECT_URL)) {
+                    return;
+                }
+                String token = parseUrlFragment(uri.replace(REDIRECT_URL, "").replace("#", "")).get("access_token");
+                Intent intent = new Intent();
+                intent.putExtra(TOKEN, token);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 

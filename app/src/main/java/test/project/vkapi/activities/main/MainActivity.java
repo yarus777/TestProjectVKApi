@@ -1,4 +1,4 @@
-package test.project.vkapi;
+package test.project.vkapi.activities.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,30 +6,27 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.inject.Inject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import test.project.vkapi.R;
+import test.project.vkapi.activities.BaseActivity;
 import test.project.vkapi.activities.auth.OAuthActivity;
-import test.project.vkapi.core.DaggerDependencyComponent;
-import test.project.vkapi.core.DependencyComponent;
-import test.project.vkapi.core.api.VkApi;
-import test.project.vkapi.core.api.feed.FeedItem;
-import test.project.vkapi.core.api.feed.FeedResponse;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int AUTH_CODE = 8237;
 
-    VkApi api;
+    private TextView status;
+
+    @Inject
+    MainActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +35,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
-        DependencyComponent daggerComponent = DaggerDependencyComponent.builder().build();
-        api = daggerComponent.getRetrofit();
+        getAppComponent().inject(this);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,9 +46,18 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        status = findViewById(R.id.login_status);
 
+        viewModel.setView(this);
+    }
+
+    public void startAuthActivity() {
         Intent intent = new Intent(this, OAuthActivity.class);
         startActivityForResult(intent, AUTH_CODE);
+    }
+
+    public void updateLoginStatus(boolean isLoggedIn) {
+        status.setText(isLoggedIn ? "signed in" : "signed out");
     }
 
     @Override
@@ -62,25 +66,7 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == AUTH_CODE) {
             if (resultCode == RESULT_OK) {
                 String token = data.getStringExtra(OAuthActivity.TOKEN);
-                Log.d("token", token);
-                api.getFeed(token, "5.74").enqueue(new Callback<FeedResponse>() {
-                    @Override
-                    public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
-
-                        List<String> texts = new ArrayList<>();
-                        for (FeedItem item : response.body().getFeedList().getItems()) {
-                            texts.add(item.getType());
-                        }
-                        Log.d("feed", response.body().toString());
-                    }
-
-                    @Override
-                    public void onFailure(Call<FeedResponse> call, Throwable t) {
-                        Log.e("feed", t.getMessage());
-                    }
-                });
-            } else {
-                // error
+                viewModel.login(token);
             }
         }
     }
@@ -107,10 +93,20 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_exit) {
-
+            viewModel.logout();
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setFeed(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        Log.d("feed", message);
+    }
+
+    public void setError(String error) {
+        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+        Log.e("error", error);
     }
 }
