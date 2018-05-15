@@ -11,19 +11,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import test.project.vkapi.activities.auth.OAuthActivity;
+import test.project.vkapi.core.DaggerDependencyComponent;
+import test.project.vkapi.core.DependencyComponent;
 import test.project.vkapi.core.api.VkApi;
+import test.project.vkapi.core.api.feed.FeedItem;
 import test.project.vkapi.core.api.feed.FeedResponse;
 
 public class MainActivity extends AppCompatActivity
@@ -40,19 +38,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
 
-        api = new Retrofit.Builder()
-                .baseUrl("https://api.vk.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build()
-                .create(VkApi.class);
-
+        DependencyComponent daggerComponent = DaggerDependencyComponent.builder().build();
+        api = daggerComponent.getRetrofit();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -71,19 +59,24 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == AUTH_CODE) {
-            if(resultCode == RESULT_OK) {
+        if (requestCode == AUTH_CODE) {
+            if (resultCode == RESULT_OK) {
                 String token = data.getStringExtra(OAuthActivity.TOKEN);
                 Log.d("token", token);
                 api.getFeed(token, "5.74").enqueue(new Callback<FeedResponse>() {
                     @Override
                     public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
+
+                        List<String> texts = new ArrayList<>();
+                        for (FeedItem item : response.body().getFeedList().getItems()) {
+                            texts.add(item.getType());
+                        }
                         Log.d("feed", response.body().toString());
                     }
 
                     @Override
                     public void onFailure(Call<FeedResponse> call, Throwable t) {
-                        Log.e("feed",t.getMessage());
+                        Log.e("feed", t.getMessage());
                     }
                 });
             } else {
@@ -109,21 +102,14 @@ public class MainActivity extends AppCompatActivity
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_news) {
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_about) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_exit) {
 
         }
-
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
