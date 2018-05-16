@@ -1,6 +1,7 @@
 package test.project.vkapi.activities.main;
 
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import javax.inject.Inject;
 import test.project.vkapi.R;
 import test.project.vkapi.activities.BaseActivity;
 import test.project.vkapi.activities.auth.OAuthActivity;
+import test.project.vkapi.databinding.ActivityMainBinding;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -25,30 +27,39 @@ public class MainActivity extends BaseActivity
 
     private TextView status;
 
+    //@Inject
+    //MainActivityViewModel viewModel;
+
+    ActivityMainBinding binding;
+
     @Inject
-    MainActivityViewModel viewModel;
+    MainViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setContentView(R.layout.activity_main);
 
         getAppComponent().inject(this);
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setViewmodel(mainViewModel);
+        //binding.setMainViewModel(mainViewModel);
+        mainViewModel.init();
+
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         status = findViewById(R.id.login_status);
-
-        viewModel.setView(this);
+        //viewModel.setView(this);
     }
 
     public void startAuthActivity() {
@@ -66,7 +77,8 @@ public class MainActivity extends BaseActivity
         if (requestCode == AUTH_CODE) {
             if (resultCode == RESULT_OK) {
                 String token = data.getStringExtra(OAuthActivity.TOKEN);
-                viewModel.login(token);
+                //viewModel.login(token);
+                mainViewModel.login(token);
             }
         }
     }
@@ -93,7 +105,8 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_exit) {
-            viewModel.logout();
+            //viewModel.logout();
+            mainViewModel.logout();
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

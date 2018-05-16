@@ -11,7 +11,8 @@
     <string name="menu_exit">Exit</string>
 
 
-
+    <string name="signed_in">Signed in</string>
+    <string name="signed_out">Signed out</string>
 
     <integer name="com_vk_sdk_AppId">6478702</integer>
 

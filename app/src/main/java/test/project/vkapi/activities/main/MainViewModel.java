@@ -1,5 +1,8 @@
 package test.project.vkapi.activities.main;
 
+import android.content.Context;
+import android.databinding.BaseObservable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,33 +11,29 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import test.project.vkapi.activities.BaseViewModel;
 import test.project.vkapi.core.api.VkApi;
 import test.project.vkapi.core.api.feed.FeedItem;
 import test.project.vkapi.core.api.feed.FeedResponse;
 import test.project.vkapi.core.user.UserManager;
 
-public class MainActivityViewModel extends BaseViewModel<MainActivity> {
+
+public class MainViewModel extends BaseObservable {
+
+    private Context context;
     private final VkApi api;
     private final UserManager userManager;
 
     @Inject
-    public MainActivityViewModel(VkApi api, UserManager userManager) {
+    public MainViewModel(Context context, VkApi api, UserManager userManager) {
+        this.context = context;
         this.api = api;
         this.userManager = userManager;
     }
 
-    public void logout() {
-        userManager.logout();
-        getView().updateLoginStatus(userManager.isAuthorized());
-    }
-
-    @Override
-    public void setView(MainActivity view) {
-        super.setView(view);
-        getView().updateLoginStatus(userManager.isAuthorized());
+    public void init() {
+        //updateLoginStatus(userManager.isAuthorized());
         if (!userManager.isAuthorized()) {
-            getView().startAuthActivity();
+            //startAuthActivity();
         } else {
             loadFeed();
         }
@@ -48,20 +47,28 @@ public class MainActivityViewModel extends BaseViewModel<MainActivity> {
                 for (FeedItem item : response.body().getFeedList().getItems()) {
                     texts.add(item.getType());
                 }
-                getView().setFeed("Loaded successfully");
             }
 
             @Override
             public void onFailure(Call<FeedResponse> call, Throwable t) {
-                getView().setError(t.getMessage());
             }
         });
 
     }
 
+    public void logout() {
+        userManager.logout();
+        //updateLoginStatus(userManager.isAuthorized());
+    }
+
     public void login(String token) {
         userManager.login(token);
-        getView().updateLoginStatus(userManager.isAuthorized());
+        //updateLoginStatus(userManager.isAuthorized());
         loadFeed();
+
     }
+
+   /*public void updateLoginStatus(boolean isLoggedIn) {
+        status.setText(isLoggedIn ? "signed in" : "signed out");
+    }*/
 }

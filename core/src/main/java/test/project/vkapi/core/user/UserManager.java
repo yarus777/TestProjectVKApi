@@ -1,14 +1,17 @@
 package test.project.vkapi.core.user;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.webkit.CookieManager;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import test.project.vkapi.core.BR;
 import test.project.vkapi.core.storage.DataStorage;
 
 @Singleton
-public class UserManager {
+public class UserManager extends BaseObservable{
     private static final String TOKEN = "token";
 
     private String token;
@@ -20,21 +23,25 @@ public class UserManager {
         this.dataStorage = dataStorage;
     }
 
+    @Bindable
     public String getToken() {
         return token;
     }
 
     public void login(String token) {
         this.token = token;
+        notifyPropertyChanged(BR.token);
         save();
     }
 
+    @Bindable
     public boolean isAuthorized() {
         return token != null && !token.isEmpty();
     }
 
     public void logout() {
         token = null;
+        notifyPropertyChanged(BR.token);
         CookieManager.getInstance().removeAllCookies(null);
         save();
     }
