@@ -31,6 +31,7 @@ public class UserManager extends BaseObservable{
     public void login(String token) {
         this.token = token;
         notifyPropertyChanged(BR.token);
+        notifyPropertyChanged(BR.authorized);
         save();
     }
 
@@ -42,6 +43,7 @@ public class UserManager extends BaseObservable{
     public void logout() {
         token = null;
         notifyPropertyChanged(BR.token);
+        notifyPropertyChanged(BR.authorized);
         CookieManager.getInstance().removeAllCookies(null);
         save();
     }

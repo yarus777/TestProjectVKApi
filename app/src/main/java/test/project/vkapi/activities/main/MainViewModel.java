@@ -1,6 +1,5 @@
 package test.project.vkapi.activities.main;
 
-import android.content.Context;
 import android.databinding.BaseObservable;
 
 import java.util.ArrayList;
@@ -19,21 +18,28 @@ import test.project.vkapi.core.user.UserManager;
 
 public class MainViewModel extends BaseObservable {
 
-    private Context context;
     private final VkApi api;
     private final UserManager userManager;
+    private List<Observer> observers = new ArrayList<>();
 
     @Inject
-    public MainViewModel(Context context, VkApi api, UserManager userManager) {
-        this.context = context;
+    public MainViewModel(VkApi api, UserManager userManager) {
         this.api = api;
         this.userManager = userManager;
+    }
+
+    public void setObserver(Observer observer) {
+        observers.add(observer);
     }
 
     public void init() {
         //updateLoginStatus(userManager.isAuthorized());
         if (!userManager.isAuthorized()) {
-            //startAuthActivity();
+            if (observers != null) {
+                for (Observer observer : observers) {
+                    observer.onNotAuthorized();
+                }
+            }
         } else {
             loadFeed();
         }
@@ -66,6 +72,10 @@ public class MainViewModel extends BaseObservable {
         //updateLoginStatus(userManager.isAuthorized());
         loadFeed();
 
+    }
+
+    public interface Observer {
+        void onNotAuthorized();
     }
 
    /*public void updateLoginStatus(boolean isLoggedIn) {

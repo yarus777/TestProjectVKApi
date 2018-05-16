@@ -20,8 +20,7 @@ import test.project.vkapi.activities.BaseActivity;
 import test.project.vkapi.activities.auth.OAuthActivity;
 import test.project.vkapi.databinding.ActivityMainBinding;
 
-public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements MainViewModel.Observer, NavigationView.OnNavigationItemSelectedListener {
 
     private static final int AUTH_CODE = 8237;
 
@@ -45,7 +44,9 @@ public class MainActivity extends BaseActivity
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setViewmodel(mainViewModel);
         //binding.setMainViewModel(mainViewModel);
+        mainViewModel.setObserver(this);
         mainViewModel.init();
+
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -121,5 +122,10 @@ public class MainActivity extends BaseActivity
     public void setError(String error) {
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
         Log.e("error", error);
+    }
+
+    @Override
+    public void onNotAuthorized() {
+        startAuthActivity();
     }
 }
