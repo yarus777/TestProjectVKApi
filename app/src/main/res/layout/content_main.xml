@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <data>
-        <variable
+       <!-- <variable
             name="userManager"
-            type="test.project.vkapi.core.user.UserManager"/>
+            type="test.project.vkapi.core.user.UserManager"/>-->
+        <variable
+            name="contentVm"
+            type="test.project.vkapi.activities.main.MainViewModel"/>
 
     </data>
 
@@ -21,8 +23,8 @@
             android:id="@+id/login_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{userManager.authorized ? @string/signed_in : @string/signed_out}"/>
+            android:text="@{contentVm.loginStatus}"
+            />
 
     </LinearLayout>
 </layout>
-

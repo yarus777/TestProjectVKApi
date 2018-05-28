@@ -7,7 +7,6 @@ import android.webkit.CookieManager;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import test.project.vkapi.core.BR;
 import test.project.vkapi.core.storage.DataStorage;
 
 @Singleton
@@ -23,15 +22,13 @@ public class UserManager extends BaseObservable{
         this.dataStorage = dataStorage;
     }
 
-    @Bindable
+
     public String getToken() {
         return token;
     }
 
     public void login(String token) {
         this.token = token;
-        notifyPropertyChanged(BR.token);
-        notifyPropertyChanged(BR.authorized);
         save();
     }
 
@@ -42,8 +39,6 @@ public class UserManager extends BaseObservable{
 
     public void logout() {
         token = null;
-        notifyPropertyChanged(BR.token);
-        notifyPropertyChanged(BR.authorized);
         CookieManager.getInstance().removeAllCookies(null);
         save();
     }

@@ -1,6 +1,8 @@
 package test.project.vkapi.activities.main;
 
+
 import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +12,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import test.project.vkapi.BR;
 import test.project.vkapi.core.api.VkApi;
 import test.project.vkapi.core.api.feed.FeedItem;
 import test.project.vkapi.core.api.feed.FeedResponse;
@@ -33,7 +36,7 @@ public class MainViewModel extends BaseObservable {
     }
 
     public void init() {
-        //updateLoginStatus(userManager.isAuthorized());
+        notifyPropertyChanged(BR.loginStatus);
         if (!userManager.isAuthorized()) {
             if (observers != null) {
                 for (Observer observer : observers) {
@@ -64,21 +67,24 @@ public class MainViewModel extends BaseObservable {
 
     public void logout() {
         userManager.logout();
-        //updateLoginStatus(userManager.isAuthorized());
+        notifyPropertyChanged(BR.loginStatus);
     }
 
     public void login(String token) {
         userManager.login(token);
-        //updateLoginStatus(userManager.isAuthorized());
+        notifyPropertyChanged(BR.loginStatus);
         loadFeed();
 
     }
+
 
     public interface Observer {
         void onNotAuthorized();
     }
 
-   /*public void updateLoginStatus(boolean isLoggedIn) {
-        status.setText(isLoggedIn ? "signed in" : "signed out");
-    }*/
+    @Bindable
+    public String getLoginStatus() {
+        return userManager.isAuthorized() ? "signed in" : "signed out";
+    }
+
 }

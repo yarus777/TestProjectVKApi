@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <data></data>
+    <data>
+        <variable
+            name="barVm"
+            type="test.project.vkapi.activities.main.MainViewModel"/>
+    </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -26,7 +30,8 @@
 
         <include
             android:id="@+id/content_main"
-            layout="@layout/content_main" />
+            layout="@layout/content_main"
+            app:contentVm="@{barVm}"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
