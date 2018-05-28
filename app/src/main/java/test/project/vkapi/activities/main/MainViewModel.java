@@ -74,7 +74,6 @@ public class MainViewModel extends BaseObservable {
         userManager.login(token);
         notifyPropertyChanged(BR.loginStatus);
         loadFeed();
-
     }
 
 

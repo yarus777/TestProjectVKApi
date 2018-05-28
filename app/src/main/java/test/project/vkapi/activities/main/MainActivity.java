@@ -10,7 +10,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import javax.inject.Inject;
@@ -24,12 +23,7 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
 
     private static final int AUTH_CODE = 8237;
 
-    private TextView status;
-
-    //@Inject
-    //MainActivityViewModel viewModel;
-
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
 
     @Inject
     MainViewModel mainViewModel;
@@ -37,17 +31,12 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-
         getAppComponent().inject(this);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setViewmodel(mainViewModel);
-        //binding.setMainViewModel(mainViewModel);
         mainViewModel.setObserver(this);
         mainViewModel.init();
-
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -58,18 +47,11 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
         toggle.syncState();
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        status = findViewById(R.id.login_status);
-        //viewModel.setView(this);
     }
 
     public void startAuthActivity() {
         Intent intent = new Intent(this, OAuthActivity.class);
         startActivityForResult(intent, AUTH_CODE);
-    }
-
-    public void updateLoginStatus(boolean isLoggedIn) {
-        status.setText(isLoggedIn ? "signed in" : "signed out");
     }
 
     @Override
@@ -78,7 +60,6 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
         if (requestCode == AUTH_CODE) {
             if (resultCode == RESULT_OK) {
                 String token = data.getStringExtra(OAuthActivity.TOKEN);
-                //viewModel.login(token);
                 mainViewModel.login(token);
             }
         }
@@ -94,7 +75,6 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
         }
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -106,22 +86,11 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
         } else if (id == R.id.nav_about) {
 
         } else if (id == R.id.nav_exit) {
-            //viewModel.logout();
             mainViewModel.logout();
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    public void setFeed(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-        Log.d("feed", message);
-    }
-
-    public void setError(String error) {
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
-        Log.e("error", error);
     }
 
     @Override

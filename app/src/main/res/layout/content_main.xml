@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-       <!-- <variable
-            name="userManager"
-            type="test.project.vkapi.core.user.UserManager"/>-->
         <variable
             name="contentVm"
             type="test.project.vkapi.activities.main.MainViewModel"/>
