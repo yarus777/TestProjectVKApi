@@ -1,6 +1,9 @@
 package test.project.vkapi.activities.main;
 
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
@@ -19,13 +22,23 @@ import test.project.vkapi.core.api.feed.FeedResponse;
 import test.project.vkapi.core.user.UserManager;
 
 
-public class MainViewModel extends BaseObservable {
+public class MainViewModel extends ViewModel {
 
     private final VkApi api;
     private final UserManager userManager;
     private List<Observer> observers = new ArrayList<>();
 
-    @Inject
+    private MutableLiveData<String> loginStatus = new MutableLiveData<>();
+
+    public LiveData<String> getLoginStatus() {
+        return loginStatus;
+    }
+
+    private void updateLoginStatus() {
+        loginStatus.setValue(userManager.isAuthorized() ? "signed in" : "signed out");
+    }
+
+
     public MainViewModel(VkApi api, UserManager userManager) {
         this.api = api;
         this.userManager = userManager;
@@ -36,7 +49,7 @@ public class MainViewModel extends BaseObservable {
     }
 
     public void init() {
-        notifyPropertyChanged(BR.loginStatus);
+        updateLoginStatus();
         if (!userManager.isAuthorized()) {
             if (observers != null) {
                 for (Observer observer : observers) {
@@ -67,12 +80,12 @@ public class MainViewModel extends BaseObservable {
 
     public void logout() {
         userManager.logout();
-        notifyPropertyChanged(BR.loginStatus);
+        updateLoginStatus();
     }
 
     public void login(String token) {
         userManager.login(token);
-        notifyPropertyChanged(BR.loginStatus);
+        updateLoginStatus();
         loadFeed();
     }
 
@@ -81,9 +94,5 @@ public class MainViewModel extends BaseObservable {
         void onNotAuthorized();
     }
 
-    @Bindable
-    public String getLoginStatus() {
-        return userManager.isAuthorized() ? "signed in" : "signed out";
-    }
 
 }

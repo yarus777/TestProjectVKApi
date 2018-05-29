@@ -1,5 +1,6 @@
 package test.project.vkapi.activities.main;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -25,16 +26,22 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
 
     private ActivityMainBinding binding;
 
-    @Inject
+
     MainViewModel mainViewModel;
+
+    @Inject
+    MainViewModelFactory vmFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getAppComponent().inject(this);
 
+        mainViewModel = ViewModelProviders.of(this, vmFactory).get(MainViewModel.class);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
         binding.setViewmodel(mainViewModel);
+
         mainViewModel.setObserver(this);
         mainViewModel.init();
 
