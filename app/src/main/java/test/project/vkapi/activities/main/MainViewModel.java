@@ -49,7 +49,7 @@ public class MainViewModel extends BaseObservable {
     }
 
     private void loadFeed() {
-        api.getFeed(userManager.getToken(), "5.74").enqueue(new Callback<FeedResponse>() {
+        api.getFeed(userManager.getToken(), "5.77").enqueue(new Callback<FeedResponse>() {
             @Override
             public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
                 List<String> texts = new ArrayList<>();

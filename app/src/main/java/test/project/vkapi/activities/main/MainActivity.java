@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import test.project.vkapi.R;
 import test.project.vkapi.activities.BaseActivity;
 import test.project.vkapi.activities.auth.OAuthActivity;
+import test.project.vkapi.core.api.db.FeedDatabase;
 import test.project.vkapi.databinding.ActivityMainBinding;
 
 public class MainActivity extends BaseActivity implements MainViewModel.Observer, NavigationView.OnNavigationItemSelectedListener {
@@ -24,6 +25,7 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
     private static final int AUTH_CODE = 8237;
 
     private ActivityMainBinding binding;
+
 
     @Inject
     MainViewModel mainViewModel;

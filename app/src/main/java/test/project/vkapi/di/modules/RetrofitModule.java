@@ -21,6 +21,7 @@ public class RetrofitModule {
                 .client(createClient())
                 .build()
                 .create(VkApi.class);
+
     }
 
     private OkHttpClient createClient() {

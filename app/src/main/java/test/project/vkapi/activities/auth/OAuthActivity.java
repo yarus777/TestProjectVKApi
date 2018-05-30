@@ -66,7 +66,7 @@ public class OAuthActivity extends BaseActivity {
                 .appendQueryParameter("redirect_uri", REDIRECT_URL)
                 .appendQueryParameter("response_type", "token")
                 .appendQueryParameter("scope", "wall,friends")
-                .appendQueryParameter("v", "5.74");
+                .appendQueryParameter("v", "5.77");
         webView.loadUrl(builder.build().toString());
     }
 
