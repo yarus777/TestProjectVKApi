@@ -9,6 +9,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import test.project.vkapi.core.api.VkApi;
+import test.project.vkapi.core.api.feed.FeedConverterFactory;
+import test.project.vkapi.core.api.feed.ResponseConverter;
 
 @Module
 public class RetrofitModule {
@@ -17,7 +19,7 @@ public class RetrofitModule {
     public VkApi provideApi() {
         return new Retrofit.Builder()
                 .baseUrl("https://api.vk.com/")
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(new FeedConverterFactory())
                 .client(createClient())
                 .build()
                 .create(VkApi.class);

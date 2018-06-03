@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import test.project.vkapi.core.api.db.FeedDatabase;
+import test.project.vkapi.core.db.FeedDatabase;
 
 @Module
 public class DatabaseModule {

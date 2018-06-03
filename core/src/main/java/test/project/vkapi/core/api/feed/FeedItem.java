@@ -16,6 +16,9 @@ public class FeedItem {
     @SerializedName("source_id")
     private String feedId;
 
+    @SerializedName("text")
+    private String text;
+
     public String getType() {
         return type;
     }
@@ -30,5 +33,13 @@ public class FeedItem {
 
     public void setFeedId(String feedId) {
         this.feedId = feedId;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }
