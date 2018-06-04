@@ -21,8 +21,6 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
 
     private static final int AUTH_CODE = 8237;
 
-    private ActivityMainBinding binding;
-
 
     @Inject
     MainViewModel mainViewModel;
@@ -32,7 +30,7 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
         super.onCreate(savedInstanceState);
         getAppComponent().inject(this);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setViewmodel(mainViewModel);
         mainViewModel.setObserver(this);
         mainViewModel.init();
