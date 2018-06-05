@@ -11,7 +11,7 @@ import java.util.List;
 import test.project.vkapi.core.api.feed.FeedItem;
 
 
-@Dao
+/*@Dao
 public interface FeedItemDao {
 
     @Query("SELECT * FROM feedItem")
@@ -28,4 +28,4 @@ public interface FeedItemDao {
 
     @Delete
     void delete(FeedItem feedItem);
-}
+}*/

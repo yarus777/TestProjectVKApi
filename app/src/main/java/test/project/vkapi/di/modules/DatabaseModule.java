@@ -7,9 +7,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import test.project.vkapi.core.db.FeedDatabase;
 
-@Module
+/*@Module
 public class DatabaseModule {
 
     private Context context;
@@ -23,4 +22,4 @@ public class DatabaseModule {
     public FeedDatabase provideDatabase() {
         return Room.databaseBuilder(context, FeedDatabase.class, "database").build();
     }
-}
+}*/

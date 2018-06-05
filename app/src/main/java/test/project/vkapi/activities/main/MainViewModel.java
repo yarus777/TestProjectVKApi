@@ -4,6 +4,8 @@ package test.project.vkapi.activities.main;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
+import android.databinding.ObservableArrayList;
+import android.databinding.ObservableList;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -12,11 +14,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import me.tatarka.bindingcollectionadapter2.ItemBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import test.project.vkapi.BR;
 import test.project.vkapi.FeedAdapter;
+import test.project.vkapi.R;
 import test.project.vkapi.core.api.VkApi;
 import test.project.vkapi.core.api.feed.FeedItem;
 import test.project.vkapi.core.api.feed.FeedResponse;
@@ -29,6 +33,10 @@ public class MainViewModel extends BaseObservable {
     private final UserManager userManager;
     private List<Observer> observers = new ArrayList<>();
     private FeedAdapter adapter;
+
+    //public final ObservableList<FeedItem> feeds = new ObservableArrayList<>();
+    //public final ItemBinding<FeedItem> itemBinding = ItemBinding.of(BR.feedItem, R.layout.feed_item);
+    List<FeedItem> feeds = new ArrayList<>();
 
     @Inject
     public MainViewModel(VkApi api, UserManager userManager) {
@@ -55,10 +63,10 @@ public class MainViewModel extends BaseObservable {
     }
 
     private void loadFeed() {
-        api.getFeed(userManager.getToken(), "5.77").enqueue(new Callback<FeedResponse>() {
+        api.getFeed(userManager.getToken(), "5.78").enqueue(new Callback<FeedResponse>() {
             @Override
             public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
-                List<FeedItem> feeds = new ArrayList<>();
+
                 for (FeedItem item : response.body().getFeedList().getItems()) {
                     feeds.add(item);
                 }

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+        <import type="me.tatarka.bindingcollectionadapter2.LayoutManagers" />
         <variable
             name="contentVm"
-            type="test.project.vkapi.activities.main.MainViewModel"/>
+            type="test.project.vkapi.activities.main.MainViewModel" />
 
     </data>
 
@@ -12,6 +14,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context="test.project.vkapi.activities.main.MainActivity"
         tools:showIn="@layout/app_bar_main">
@@ -20,16 +23,19 @@
             android:id="@+id/login_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{contentVm.loginStatus}"
-            />
+            android:text="@{contentVm.loginStatus}" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/feed_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:adapter="@{contentVm.adapter}"
-            />
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
+
+        <!--app:itemBinding="@{contentVm.itemBinding}"
+        app:items="@{contentVm.feeds}"
+        app:layoutManager="@{LayoutManagers.linear()}"-->
 
     </LinearLayout>
 </layout>

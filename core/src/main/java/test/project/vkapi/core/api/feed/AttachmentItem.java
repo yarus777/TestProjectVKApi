@@ -1,8 +1,11 @@
 package test.project.vkapi.core.api.feed;
 
+import android.arch.persistence.room.Entity;
+import android.databinding.BaseObservable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class AttachmentItem {
+public class AttachmentItem extends BaseObservable {
     @SerializedName("type")
     private String type;
 
