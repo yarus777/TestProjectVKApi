@@ -4,9 +4,6 @@ package test.project.vkapi.activities.main;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
-import android.databinding.ObservableArrayList;
-import android.databinding.ObservableList;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -14,13 +11,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import me.tatarka.bindingcollectionadapter2.ItemBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import test.project.vkapi.BR;
-import test.project.vkapi.FeedAdapter;
-import test.project.vkapi.R;
+import test.project.vkapi.adapters.FeedAdapter;
 import test.project.vkapi.core.api.VkApi;
 import test.project.vkapi.core.api.feed.FeedItem;
 import test.project.vkapi.core.api.feed.FeedResponse;
@@ -70,7 +65,10 @@ public class MainViewModel extends BaseObservable {
                 for (FeedItem item : response.body().getFeedList().getItems()) {
                     feeds.add(item);
                 }
-                adapter.setItems(feeds);
+                if (feeds.size() > 0) {
+                    adapter.setItems(feeds);
+                }
+
             }
 
             @Override
@@ -80,12 +78,12 @@ public class MainViewModel extends BaseObservable {
 
     }
 
-    public void logout() {
+    void logout() {
         userManager.logout();
         notifyPropertyChanged(BR.loginStatus);
     }
 
-    public void login(String token) {
+    void login(String token) {
         userManager.login(token);
         notifyPropertyChanged(BR.loginStatus);
         loadFeed();
@@ -103,7 +101,7 @@ public class MainViewModel extends BaseObservable {
 
     @Bindable
     public FeedAdapter getAdapter() {
-      return adapter;
+        return adapter;
     }
 
     @BindingAdapter({"app:adapter"})

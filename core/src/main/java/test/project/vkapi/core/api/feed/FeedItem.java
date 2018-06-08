@@ -28,6 +28,16 @@ public class FeedItem extends BaseObservable {
     @SerializedName("comments")
     private CommentItem comments;
 
+    public List<PhotoItem> photoAttachments;
+
+    public void setPhotoAttachments(List<PhotoItem> photoAttachments) {
+        this.photoAttachments = photoAttachments;
+    }
+
+    public List<PhotoItem> getPhotoAttachments() {
+        return photoAttachments;
+    }
+
     public String getType() {
         return type;
     }
