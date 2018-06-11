@@ -14,6 +14,12 @@ import okhttp3.ResponseBody;
 import retrofit2.Converter;
 
 public class ResponseConverter implements Converter<ResponseBody, FeedResponse> {
+    private final Gson gson;
+
+    public ResponseConverter() {
+        gson = new Gson();
+    }
+
     @Override
     public FeedResponse convert(ResponseBody value) throws IOException {
         FeedResponse response = new FeedResponse();
@@ -38,7 +44,6 @@ public class ResponseConverter implements Converter<ResponseBody, FeedResponse> 
 
     private FeedItem parseItem(JSONObject json) throws JSONException {
         String type = json.getString("type");
-        Gson gson = new Gson();
         if (!type.equals("post")) {
             return null;
         }
@@ -50,42 +55,37 @@ public class ResponseConverter implements Converter<ResponseBody, FeedResponse> 
 
         if (json.has("attachments")) {
             JSONArray attachments = json.getJSONArray("attachments");
-            List<AttachmentItem> attachmentsList = new ArrayList<>();
             for (int i = 0; i < attachments.length(); i++) {
-                AttachmentItem attachmentItem = parseAttachmentItem(attachments.getJSONObject(i));
-                if (attachmentItem != null) {
-                    attachmentsList.add(attachmentItem);
-                }
-                item.setAttachments(attachmentsList);
+                parseAttachmentItem(attachments.getJSONObject(i), item);
             }
         }
 
         return item;
     }
 
-    private AttachmentItem parseAttachmentItem(JSONObject json) throws JSONException {
+    private void parseAttachmentItem(JSONObject json, FeedItem feedItem) throws JSONException {
         String type = json.getString("type");
-        Gson gson = new Gson();
-        AttachmentItem item = new AttachmentItem();
         switch (type) {
             case "photo": {
-                item = gson.fromJson(json.getString("photo"), PhotoItem.class);
+                PhotoItem attachment = gson.fromJson(json.getString("photo"), PhotoItem.class);
+                feedItem.addPhotoAttachment(attachment);
                 break;
             }
             case "video": {
-                item = gson.fromJson(json.getString("video"), VideoItem.class);
+                VideoItem attachment = gson.fromJson(json.getString("video"), VideoItem.class);
+                feedItem.addVideoAttachment(attachment);
                 break;
             }
             case "audio": {
-                item = gson.fromJson(json.getString("audio"), AudioItem.class);
+                AudioItem attachment = gson.fromJson(json.getString("audio"), AudioItem.class);
+                feedItem.addAudioAttachment(attachment);
                 break;
             }
             case "link": {
-                item = gson.fromJson(json.getString("link"), LinkItem.class);
+                LinkItem attachment = gson.fromJson(json.getString("link"), LinkItem.class);
+                feedItem.addLinkAttachment(attachment);
                 break;
             }
         }
-
-        return item;
     }
 }

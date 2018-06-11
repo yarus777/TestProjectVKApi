@@ -9,10 +9,19 @@ import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class FeedItem extends BaseObservable {
+
+    public FeedItem() {
+        photoAttachments = new ArrayList<>();
+        audioAttachments = new ArrayList<>();
+        videoAttachments = new ArrayList<>();
+        linkAttachments = new ArrayList<>();
+    }
+
     @SerializedName("type")
     private String type;
 
@@ -22,17 +31,13 @@ public class FeedItem extends BaseObservable {
     @SerializedName("likes")
     private LikeItem likes;
 
-    @SerializedName("attachments")
-    private List<AttachmentItem> attachments;
-
     @SerializedName("comments")
     private CommentItem comments;
 
-    public List<PhotoItem> photoAttachments;
-
-    public void setPhotoAttachments(List<PhotoItem> photoAttachments) {
-        this.photoAttachments = photoAttachments;
-    }
+    private List<PhotoItem> photoAttachments;
+    private List<AudioItem> audioAttachments;
+    private List<VideoItem> videoAttachments;
+    private List<LinkItem> linkAttachments;
 
     public List<PhotoItem> getPhotoAttachments() {
         return photoAttachments;
@@ -70,11 +75,31 @@ public class FeedItem extends BaseObservable {
         this.comments = comments;
     }
 
-    public List<AttachmentItem> getAttachments() {
-        return attachments;
+    public void addPhotoAttachment(PhotoItem attachment) {
+        photoAttachments.add(attachment);
     }
 
-    public void setAttachments(List<AttachmentItem> attachments) {
-        this.attachments = attachments;
+    public void addVideoAttachment(VideoItem attachment) {
+        videoAttachments.add(attachment);
+    }
+
+    public void addAudioAttachment(AudioItem attachment) {
+        audioAttachments.add(attachment);
+    }
+
+    public void addLinkAttachment(LinkItem attachment) {
+        linkAttachments.add(attachment);
+    }
+
+    public List<AudioItem> getAudioAttachments() {
+        return audioAttachments;
+    }
+
+    public List<VideoItem> getVideoAttachments() {
+        return videoAttachments;
+    }
+
+    public List<LinkItem> getLinkAttachments() {
+        return linkAttachments;
     }
 }

@@ -91,10 +91,14 @@ public class MainViewModel extends BaseObservable {
         api.getUsers(userManager.getToken(), "5.8", "photo_400_orig").enqueue(new Callback<UsersResponse>() {
             @Override
             public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
-                for (UserResponse item : response.body().getResponse()) {
-                    users.add(item);
-                    notifyPropertyChanged(BR.userName);
-                    notifyPropertyChanged(BR.imageUrl);
+                if(response.isSuccessful() && response.body() != null) {
+                    for (UserResponse item : response.body().getResponse()) {
+                        users.add(item);
+                        notifyPropertyChanged(BR.userName);
+                        notifyPropertyChanged(BR.imageUrl);
+                    }
+                } else {
+                    onFailure(call, new Exception(response.message()));
                 }
             }
 
@@ -114,6 +118,7 @@ public class MainViewModel extends BaseObservable {
         userManager.login(token);
         notifyPropertyChanged(BR.loginStatus);
         loadFeed();
+        loadUsers();
     }
 
 

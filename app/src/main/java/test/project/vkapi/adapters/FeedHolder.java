@@ -32,25 +32,8 @@ public class FeedHolder extends RecyclerView.ViewHolder implements Observable {
         binding.setFeedItem(item);
         binding.setFeedHolder(this);
         photoAdapter = new PhotoAdapter();
-        getPhotoAttachments(item);
+        photoAdapter.setItems(item.getPhotoAttachments());
         binding.executePendingBindings();
-    }
-
-    void getPhotoAttachments(FeedItem item) {
-        List<PhotoItem> photoList = new ArrayList<>();
-
-        List<AttachmentItem> list = item.getAttachments();
-        if (list != null) {
-            for (int i = 0; i < list.size(); i++) {
-                if (list.get(i) instanceof PhotoItem) {
-                    photoList.add((PhotoItem) list.get(i));
-                }
-            }
-        }
-        if (photoList.size() > 0) {
-            photoAdapter.setItems(photoList);
-        }
-
     }
 
     @Bindable
@@ -61,9 +44,7 @@ public class FeedHolder extends RecyclerView.ViewHolder implements Observable {
     @BindingAdapter({"photoAdapter"})
     public static void bind(RecyclerView recyclerView, PhotoAdapter adapter) {
         recyclerView.setAdapter(adapter);
-
     }
-
 
     @Override
     public void addOnPropertyChangedCallback(OnPropertyChangedCallback callback) {
