@@ -20,6 +20,7 @@ public class RetrofitModule {
         return new Retrofit.Builder()
                 .baseUrl("https://api.vk.com/")
                 .addConverterFactory(new FeedConverterFactory())
+                .addConverterFactory(GsonConverterFactory.create())
                 .client(createClient())
                 .build()
                 .create(VkApi.class);

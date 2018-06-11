@@ -10,10 +10,10 @@ import retrofit2.Retrofit;
 
 public class FeedConverterFactory extends Converter.Factory {
     @Override
-    public Converter<ResponseBody, ?> responseBodyConverter(final Type type,
-                                                            Annotation[] annotations, Retrofit retrofit) {
-
-
-        return new ResponseConverter();
+    public Converter<ResponseBody, ?> responseBodyConverter(final Type type, Annotation[] annotations, Retrofit retrofit) {
+        if (type != FeedResponse.class) {
+            return null;
+        }
+            return new ResponseConverter();
     }
 }

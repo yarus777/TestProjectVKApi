@@ -16,6 +16,7 @@ import test.project.vkapi.R;
 import test.project.vkapi.activities.BaseActivity;
 import test.project.vkapi.activities.auth.OAuthActivity;
 import test.project.vkapi.databinding.ActivityMainBinding;
+import test.project.vkapi.databinding.NavHeaderMainBinding;
 
 public class MainActivity extends BaseActivity implements MainViewModel.Observer, NavigationView.OnNavigationItemSelectedListener {
 
@@ -24,6 +25,9 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
 
     @Inject
     MainViewModel mainViewModel;
+
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +39,16 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
         mainViewModel.setObserver(this);
         mainViewModel.init();
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = binding.appBarMain.toolbar;
         setSupportActionBar(toolbar);
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = binding.drawerLayout;
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = binding.navView;
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     public void startAuthActivity() {
@@ -64,7 +69,6 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -75,7 +79,6 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
         int id = item.getItemId();
 
         if (id == R.id.nav_news) {
@@ -85,7 +88,6 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
         } else if (id == R.id.nav_exit) {
             mainViewModel.logout();
         }
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
