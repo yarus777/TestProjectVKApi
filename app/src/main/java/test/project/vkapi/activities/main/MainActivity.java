@@ -16,7 +16,6 @@ import test.project.vkapi.R;
 import test.project.vkapi.activities.BaseActivity;
 import test.project.vkapi.activities.auth.OAuthActivity;
 import test.project.vkapi.databinding.ActivityMainBinding;
-import test.project.vkapi.databinding.NavHeaderMainBinding;
 
 public class MainActivity extends BaseActivity implements MainViewModel.Observer, NavigationView.OnNavigationItemSelectedListener {
 

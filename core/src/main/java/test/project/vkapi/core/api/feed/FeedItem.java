@@ -1,11 +1,6 @@
 package test.project.vkapi.core.api.feed;
 
-import android.arch.persistence.room.Embedded;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -5,10 +5,7 @@
     <data>
         <variable
             name="feedItem"
-            type="test.project.vkapi.core.api.feed.FeedItem" />
-        <variable
-            name="feedHolder"
-            type="test.project.vkapi.adapters.FeedHolder" />
+            type="test.project.vkapi.views.feed.FeedItemViewModel"/>
 
     </data>
 
@@ -27,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                app:photoAdapter="@{feedHolder.photoAdapter}" />
+                app:adapter="@{feedItem.adapter}" />
 
             <TextView
                 android:id="@+id/post_text"
@@ -35,6 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_below="@+id/photo_recycler"
+                android:autoLink="all"
                 android:text="@{feedItem.text}" />
 
             <LinearLayout
@@ -54,7 +52,7 @@
                     android:layout_width="35dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="@{String.valueOf(feedItem.likes.likeCount)}"/>
+                    android:text="@{String.valueOf(feedItem.likesCount)}"/>
 
                 <ImageView
                     android:layout_width="20dp"
@@ -65,7 +63,7 @@
                     android:layout_width="35dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="@{String.valueOf(feedItem.comments.commentCount)}"/>
+                    android:text="@{String.valueOf(feedItem.commentsCount)}"/>
 
             </LinearLayout>
 
