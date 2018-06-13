@@ -32,10 +32,10 @@
                     app:url="@{feedItem.postUserImg}" />
 
                 <TextView
-                    android:paddingLeft="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
                     android:text="@{feedItem.postUserText}" />
 
             </LinearLayout>
@@ -49,16 +49,29 @@
                 android:autoLink="all"
                 android:text="@{feedItem.text}" />
 
+            <ImageView
+                android:id="@+id/photo_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/post_text"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
+                android:scaleType="fitCenter"
+                app:attachmentUrl="@{feedItem.attachmentImg}" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/photo_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/post_text"
-                android:orientation="horizontal"
+                android:layout_below="@+id/photo_img"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:orientation="vertical"
                 app:adapter="@{feedItem.adapter}"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                app:spanCount="3" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -91,7 +104,6 @@
                     android:text="@{String.valueOf(feedItem.commentsCount)}" />
 
             </LinearLayout>
-
 
         </RelativeLayout>
 

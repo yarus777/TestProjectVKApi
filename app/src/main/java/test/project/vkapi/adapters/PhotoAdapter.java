@@ -34,8 +34,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoHolder> {
     }
 
     public void setItems(List<PhotoItem> photos) {
-        items.clear();
-        items.addAll(photos);
-        notifyDataSetChanged();
+        if (photos != null) {
+            items.clear();
+            items.addAll(photos);
+            notifyDataSetChanged();
+        }
+
     }
 }

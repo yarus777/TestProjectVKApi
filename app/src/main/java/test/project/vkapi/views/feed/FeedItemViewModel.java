@@ -3,8 +3,8 @@ package test.project.vkapi.views.feed;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
-import android.media.Image;
 import android.support.v7.widget.RecyclerView;
+import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -24,7 +24,7 @@ public class FeedItemViewModel extends BaseObservable {
         this.item = item;
         this.postInfoSource = postInfoSource;
         adapter = new PhotoAdapter();
-        adapter.setItems(item.getPhotoAttachments());
+        adapter.setItems((item.getPhotoAttachments().size() > 1) ? (item.getPhotoAttachments().subList(1, item.getPhotoAttachments().size() - 1)) : null);
     }
 
     @Bindable
@@ -69,5 +69,18 @@ public class FeedItemViewModel extends BaseObservable {
                 .apply(RequestOptions.circleCropTransform())
                 .into(imageView);
     }
+
+    @Bindable
+    public String getAttachmentImg() {
+        return item.getPhotoAttachments().size() > 0 ? item.getPhotoAttachments().get(0).getImageUrl() : "";
+    }
+
+    @BindingAdapter({"app:attachmentUrl"})
+    public static void setAttachmentImg(ImageView imageView, String attachmentUrl) {
+        Glide.with(imageView.getContext())
+                .load(attachmentUrl)
+                .into(imageView);
+    }
+
 
 }

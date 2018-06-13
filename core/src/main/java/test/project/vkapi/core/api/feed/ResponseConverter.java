@@ -14,6 +14,7 @@ import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
+import test.project.vkapi.core.api.error.ErrorResponse;
 import test.project.vkapi.core.api.feed.attachments.AudioItem;
 import test.project.vkapi.core.api.feed.attachments.LinkItem;
 import test.project.vkapi.core.api.feed.attachments.PhotoItem;
@@ -28,6 +29,11 @@ public class ResponseConverter implements Converter<ResponseBody, FeedResponse> 
 
     @Override
     public FeedResponse convert(ResponseBody value) throws IOException {
+
+       /* ErrorResponse errorResponse = gson.fromJson(value.string(), ErrorResponse.class);
+        if (errorResponse.getErrorItem() != null) {
+
+        } */
         FeedResponse response = new FeedResponse();
         FeedList list = new FeedList();
         response.setFeedList(list);
@@ -65,6 +71,7 @@ public class ResponseConverter implements Converter<ResponseBody, FeedResponse> 
             e.printStackTrace();
         }
         return response;
+
     }
 
     private FeedItem parseItem(JSONObject json) throws JSONException {

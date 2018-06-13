@@ -73,12 +73,16 @@ public class MainViewModel extends BaseObservable {
         api.getFeed(userManager.getToken(), "5.78", 100, "post").enqueue(new Callback<FeedResponse>() {
             @Override
             public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
-                FeedList feedList = response.body().getFeedList();
-                for (FeedItem item : feedList.getItems()) {
-                    feeds.add(item);
-                }
-                if (feeds.size() > 0) {
-                    adapter.setItems(feeds, feedList);
+                if (response.isSuccessful() && response.body() != null) {
+                    FeedList feedList = response.body().getFeedList();
+                    for (FeedItem item : feedList.getItems()) {
+                        feeds.add(item);
+                    }
+                    if (feeds.size() > 0) {
+                        adapter.setItems(feeds, feedList);
+                    }
+                } else {
+                    onFailure(call, new Exception(response.message()));
                 }
             }
 
@@ -93,7 +97,7 @@ public class MainViewModel extends BaseObservable {
         api.getUsers(userManager.getToken(), "5.8", "photo_400_orig").enqueue(new Callback<UsersResponse>() {
             @Override
             public void onResponse(Call<UsersResponse> call, Response<UsersResponse> response) {
-                if(response.isSuccessful() && response.body() != null) {
+                if (response.isSuccessful() && response.body() != null) {
                     for (UserResponse item : response.body().getResponse()) {
                         users.add(item);
                         notifyPropertyChanged(BR.userName);
