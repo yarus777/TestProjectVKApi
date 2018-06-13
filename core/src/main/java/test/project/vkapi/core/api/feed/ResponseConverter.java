@@ -8,10 +8,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
+import test.project.vkapi.core.api.feed.attachments.AudioItem;
+import test.project.vkapi.core.api.feed.attachments.LinkItem;
+import test.project.vkapi.core.api.feed.attachments.PhotoItem;
+import test.project.vkapi.core.api.feed.attachments.VideoItem;
 
 public class ResponseConverter implements Converter<ResponseBody, FeedResponse> {
     private final Gson gson;
@@ -27,13 +33,32 @@ public class ResponseConverter implements Converter<ResponseBody, FeedResponse> 
         response.setFeedList(list);
         List<FeedItem> itemsRes = new ArrayList<>();
         list.setItems(itemsRes);
+
+        HashMap postInfoItems = new HashMap<String, PostInfoSource>();
+        list.setInfoItems(postInfoItems);
+
         try {
             JSONObject root = new JSONObject(value.string());
             JSONArray items = root.getJSONObject("response").getJSONArray("items");
+            JSONArray groups = root.getJSONObject("response").getJSONArray("groups");
+            JSONArray profiles = root.getJSONObject("response").getJSONArray("profiles");
             for (int i = 0; i < items.length(); i++) {
                 FeedItem feedItem = parseItem(items.getJSONObject(i));
                 if (feedItem != null) {
                     itemsRes.add(feedItem);
+                }
+            }
+            for (int j = 0; j < groups.length(); j++) {
+                GroupItem groupItem = gson.fromJson(String.valueOf(groups.getJSONObject(j)), GroupItem.class);
+                if (groupItem != null) {
+                    postInfoItems.put(groupItem.getId(), groupItem);
+                }
+            }
+
+            for (int z = 0; z < profiles.length(); z++) {
+                ProfileItem profileItem = gson.fromJson(String.valueOf(profiles.getJSONObject(z)), ProfileItem.class);
+                if (profileItem != null) {
+                    postInfoItems.put(profileItem.getId(), profileItem);
                 }
             }
         } catch (JSONException e) {
@@ -44,11 +69,12 @@ public class ResponseConverter implements Converter<ResponseBody, FeedResponse> 
 
     private FeedItem parseItem(JSONObject json) throws JSONException {
         String type = json.getString("type");
-        if (!type.equals("post")) {
+        if (!type.equals("post") || json.has("copy_history")) {
             return null;
         }
         FeedItem item = new FeedItem();
         item.setType(type);
+        item.setSourceId(json.getString("source_id"));
         item.setText(json.getString("text"));
         item.setLikes(gson.fromJson(json.getString("likes"), LikeItem.class));
         item.setComments(gson.fromJson(json.getString("comments"), CommentItem.class));
@@ -86,6 +112,8 @@ public class ResponseConverter implements Converter<ResponseBody, FeedResponse> 
                 feedItem.addLinkAttachment(attachment);
                 break;
             }
+            default:
+                break;
         }
     }
 }

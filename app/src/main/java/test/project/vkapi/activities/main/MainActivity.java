@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import javax.inject.Inject;
 
@@ -27,6 +31,9 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
+    private Toolbar toolbar;
+    private ActionBarDrawerToggle toggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +45,13 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
         mainViewModel.setObserver(this);
         mainViewModel.init();
 
-        Toolbar toolbar = binding.appBarMain.toolbar;
+        toolbar = binding.appBarMain.toolbar;
         setSupportActionBar(toolbar);
         drawer = binding.drawerLayout;
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        setUpDrawer();
+
         navigationView = binding.navView;
         navigationView.setNavigationItemSelectedListener(this);
-
     }
 
     public void startAuthActivity() {
@@ -95,4 +99,11 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
     public void onNotAuthorized() {
         startAuthActivity();
     }
+
+    private void setUpDrawer() {
+        toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+    }
+
 }

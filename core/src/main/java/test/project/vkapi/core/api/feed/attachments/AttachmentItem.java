@@ -1,4 +1,4 @@
-package test.project.vkapi.core.api.feed;
+package test.project.vkapi.core.api.feed.attachments;
 
 import android.arch.persistence.room.Entity;
 import android.databinding.BaseObservable;

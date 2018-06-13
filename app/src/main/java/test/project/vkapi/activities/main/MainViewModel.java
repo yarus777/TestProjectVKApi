@@ -24,6 +24,7 @@ import test.project.vkapi.BR;
 import test.project.vkapi.adapters.FeedAdapter;
 import test.project.vkapi.core.api.VkApi;
 import test.project.vkapi.core.api.feed.FeedItem;
+import test.project.vkapi.core.api.feed.FeedList;
 import test.project.vkapi.core.api.feed.FeedResponse;
 import test.project.vkapi.core.api.user.UserResponse;
 import test.project.vkapi.core.api.user.UsersResponse;
@@ -72,11 +73,12 @@ public class MainViewModel extends BaseObservable {
         api.getFeed(userManager.getToken(), "5.78", 100, "post").enqueue(new Callback<FeedResponse>() {
             @Override
             public void onResponse(Call<FeedResponse> call, Response<FeedResponse> response) {
-                for (FeedItem item : response.body().getFeedList().getItems()) {
+                FeedList feedList = response.body().getFeedList();
+                for (FeedItem item : feedList.getItems()) {
                     feeds.add(item);
                 }
                 if (feeds.size() > 0) {
-                    adapter.setItems(feeds);
+                    adapter.setItems(feeds, feedList);
                 }
             }
 

@@ -8,11 +8,12 @@
             type="test.project.vkapi.activities.main.MainViewModel" />
     </data>
 
-    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context="test.project.vkapi.activities.main.MainActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -34,6 +35,6 @@
             layout="@layout/content_main"
             app:contentVm="@{barVm}" />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
 </layout>
 

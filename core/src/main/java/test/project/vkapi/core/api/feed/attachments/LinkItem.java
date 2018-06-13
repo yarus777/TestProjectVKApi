@@ -1,6 +1,8 @@
-package test.project.vkapi.core.api.feed;
+package test.project.vkapi.core.api.feed.attachments;
 
 import com.google.gson.annotations.SerializedName;
+
+import test.project.vkapi.core.api.feed.attachments.AttachmentItem;
 
 
 public class LinkItem extends AttachmentItem {

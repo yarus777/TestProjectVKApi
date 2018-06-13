@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="feedItem"
-            type="test.project.vkapi.views.feed.FeedItemViewModel"/>
+            type="test.project.vkapi.views.feed.FeedItemViewModel" />
 
     </data>
 
@@ -18,52 +19,76 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/photo_recycler"
+            <LinearLayout
+                android:id="@+id/post_user_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                app:adapter="@{feedItem.adapter}" />
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:url="@{feedItem.postUserImg}" />
+
+                <TextView
+                    android:paddingLeft="5dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@{feedItem.postUserText}" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/post_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/post_user_info"
                 android:layout_margin="5dp"
-                android:layout_below="@+id/photo_recycler"
                 android:autoLink="all"
                 android:text="@{feedItem.text}" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/photo_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/post_text"
+                android:orientation="horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                app:adapter="@{feedItem.adapter}"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/post_text"
-                android:orientation="horizontal"
+                android:layout_below="@+id/photo_recycler"
                 android:gravity="center"
+                android:orientation="horizontal"
                 android:padding="5dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/baseline_favorite_black_48"/>
+                    android:src="@drawable/baseline_favorite_black_48" />
 
                 <TextView
                     android:layout_width="35dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="@{String.valueOf(feedItem.likesCount)}"/>
+                    android:text="@{String.valueOf(feedItem.likesCount)}" />
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/baseline_chat_bubble_black_48"/>
+                    android:src="@drawable/baseline_chat_bubble_black_48" />
 
                 <TextView
                     android:layout_width="35dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
-                    android:text="@{String.valueOf(feedItem.commentsCount)}"/>
+                    android:text="@{String.valueOf(feedItem.commentsCount)}" />
 
             </LinearLayout>
 

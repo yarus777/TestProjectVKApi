@@ -5,7 +5,7 @@
 
         <variable
             name="photoItem"
-            type="test.project.vkapi.core.api.feed.PhotoItem" />
+            type="test.project.vkapi.core.api.feed.attachments.PhotoItem" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

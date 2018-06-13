@@ -3,18 +3,26 @@ package test.project.vkapi.views.feed;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import test.project.vkapi.adapters.FeedAdapter;
 import test.project.vkapi.adapters.PhotoAdapter;
 import test.project.vkapi.core.api.feed.FeedItem;
+import test.project.vkapi.core.api.feed.PostInfoSource;
 
 public class FeedItemViewModel extends BaseObservable {
     private final FeedItem item;
     private final PhotoAdapter adapter;
+    private final PostInfoSource postInfoSource;
 
-    public FeedItemViewModel(FeedItem item) {
+    public FeedItemViewModel(FeedItem item, PostInfoSource postInfoSource) {
         this.item = item;
+        this.postInfoSource = postInfoSource;
         adapter = new PhotoAdapter();
         adapter.setItems(item.getPhotoAttachments());
     }
@@ -43,4 +51,23 @@ public class FeedItemViewModel extends BaseObservable {
     public static void bind(RecyclerView recyclerView, FeedAdapter adapter) {
         recyclerView.setAdapter(adapter);
     }
+
+    @Bindable
+    public String getPostUserText() {
+        return postInfoSource.getPostUserText();
+    }
+
+    @Bindable
+    public String getPostUserImg() {
+        return postInfoSource.getImgUrl();
+    }
+
+    @BindingAdapter({"app:url"})
+    public static void setImg(ImageView imageView, String postUserImg) {
+        Glide.with(imageView.getContext())
+                .load(postUserImg)
+                .apply(RequestOptions.circleCropTransform())
+                .into(imageView);
+    }
+
 }

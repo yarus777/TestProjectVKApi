@@ -1,4 +1,4 @@
-package test.project.vkapi.core.api.feed;
+package test.project.vkapi.core.api.feed.attachments;
 
 import android.arch.persistence.room.Entity;
 import android.databinding.BaseObservable;
@@ -7,7 +7,6 @@ import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

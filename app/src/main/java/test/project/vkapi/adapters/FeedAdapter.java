@@ -10,11 +10,14 @@ import java.util.List;
 
 import test.project.vkapi.R;
 import test.project.vkapi.core.api.feed.FeedItem;
+import test.project.vkapi.core.api.feed.FeedList;
+import test.project.vkapi.core.api.feed.GroupItem;
 import test.project.vkapi.databinding.FeedItemBinding;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedHolder> {
 
     private List<FeedItem> items = new ArrayList<>();
+    private FeedList feedList;
 
     @Override
     public FeedHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -25,7 +28,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedHolder> {
 
     @Override
     public void onBindViewHolder(FeedHolder holder, int position) {
-        holder.bind(items.get(position));
+        holder.bind(items.get(position), feedList.getInfoItems().get(items.get(position).getSourceId()));
     }
 
     @Override
@@ -33,9 +36,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedHolder> {
         return items.size();
     }
 
-    public void setItems(List<FeedItem> feeds) {
+    public void setItems(List<FeedItem> feeds, FeedList feedList) {
         items.clear();
         items.addAll(feeds);
+        this.feedList = feedList;
         notifyDataSetChanged();
     }
+
 }

@@ -7,6 +7,11 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import test.project.vkapi.core.api.feed.attachments.AudioItem;
+import test.project.vkapi.core.api.feed.attachments.LinkItem;
+import test.project.vkapi.core.api.feed.attachments.PhotoItem;
+import test.project.vkapi.core.api.feed.attachments.VideoItem;
+
 
 public class FeedItem extends BaseObservable {
 
@@ -16,6 +21,9 @@ public class FeedItem extends BaseObservable {
         videoAttachments = new ArrayList<>();
         linkAttachments = new ArrayList<>();
     }
+
+    @SerializedName("source_id")
+    private String sourceId;
 
     @SerializedName("type")
     private String type;
@@ -96,5 +104,13 @@ public class FeedItem extends BaseObservable {
 
     public List<LinkItem> getLinkAttachments() {
         return linkAttachments;
+    }
+
+    public String getSourceId() {
+        return sourceId;
+    }
+
+    public void setSourceId(String sourceId) {
+        this.sourceId = sourceId.replace("-", "");
     }
 }
