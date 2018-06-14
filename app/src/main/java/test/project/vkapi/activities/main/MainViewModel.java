@@ -17,6 +17,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,7 +40,6 @@ import test.project.vkapi.databinding.NavHeaderMainBinding;
 
 public class MainViewModel extends BaseObservable {
 
-    private final VkApi api;
     private final UserManager userManager;
     private List<Observer> observers = new ArrayList<>();
     private FeedAdapter adapter;
@@ -47,12 +49,12 @@ public class MainViewModel extends BaseObservable {
     List<FeedItem> feeds = new ArrayList<>();
     List<UserResponse> users = new ArrayList<>();
 
-    @Inject
-    IAppRepository iAppRepository;
+    private IAppRepository iAppRepository;
+    private Disposable disposable;
 
     @Inject
-    public MainViewModel(VkApi api, UserManager userManager) {
-        this.api = api;
+    public MainViewModel(IAppRepository vkRepository, UserManager userManager) {
+        iAppRepository = vkRepository;
         this.userManager = userManager;
         adapter = new FeedAdapter();
     }
@@ -86,36 +88,26 @@ public class MainViewModel extends BaseObservable {
     }
 
     private void loadData() {
-        iAppRepository.getFeed(new ApiCallback<FeedResponse>() {
+        iAppRepository.getFeed().subscribe(new Consumer<FeedResponse>() {
             @Override
-            public void onSuccess(FeedResponse data) {
-                feeds.addAll(data.getFeedList().getItems());
+            public void accept(FeedResponse feedResponse) throws Exception {
+                FeedList feedList = feedResponse.getFeedList();
+                feeds.addAll(feedList.getItems());
                 if (feeds.size() > 0) {
-                    adapter.setItems(feeds, data.getFeedList());
+                    adapter.setItems(feeds, feedList);
                 }
             }
-
-            @Override
-            public void onError(Throwable error) {
-
-            }
         });
-        iAppRepository.getUsers(new ApiCallback<UsersResponse>() {
+        iAppRepository.getUsers().subscribe(new Consumer<UsersResponse>() {
             @Override
-            public void onSuccess(UsersResponse data) {
-                for (UserResponse item : data.getResponse()) {
+            public void accept(UsersResponse usersResponse) throws Exception {
+                for (UserResponse item : usersResponse.getResponse()) {
                     users.add(item);
                     notifyPropertyChanged(BR.userName);
                     notifyPropertyChanged(BR.imageUrl);
                 }
             }
-
-            @Override
-            public void onError(Throwable error) {
-
-            }
         });
-
     }
 
 

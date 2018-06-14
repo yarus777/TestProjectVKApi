@@ -1,10 +1,10 @@
 package test.project.vkapi.core.db;
 
-import test.project.vkapi.core.api.ApiCallback;
+import io.reactivex.Observable;
 import test.project.vkapi.core.api.feed.FeedResponse;
 import test.project.vkapi.core.api.user.UsersResponse;
 
 public interface IAppRepository {
-    void getFeed(ApiCallback<FeedResponse> callback);
-    void getUsers(ApiCallback<UsersResponse> callback);
+    Observable<FeedResponse> getFeed();
+    Observable<UsersResponse> getUsers();
 }
