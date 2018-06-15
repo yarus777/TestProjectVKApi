@@ -6,6 +6,7 @@ import dagger.Component;
 import test.project.vkapi.activities.main.MainActivity;
 import test.project.vkapi.di.modules.AppModule;
 import test.project.vkapi.di.modules.DataModule;
+import test.project.vkapi.di.modules.DatabaseModule;
 import test.project.vkapi.di.modules.RepositoryModule;
 import test.project.vkapi.di.modules.RetrofitModule;
 
@@ -13,8 +14,8 @@ import test.project.vkapi.di.modules.RetrofitModule;
         RetrofitModule.class,
         AppModule.class,
         DataModule.class,
-        RepositoryModule.class
-        //, DatabaseModule.class
+        RepositoryModule.class,
+        DatabaseModule.class
 })
 @Singleton
 public interface AppComponent {

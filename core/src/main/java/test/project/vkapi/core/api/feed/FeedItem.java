@@ -1,7 +1,5 @@
 package test.project.vkapi.core.api.feed;
 
-import android.databinding.BaseObservable;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -13,7 +11,7 @@ import test.project.vkapi.core.api.feed.attachments.PhotoItem;
 import test.project.vkapi.core.api.feed.attachments.VideoItem;
 
 
-public class FeedItem extends BaseObservable {
+public class FeedItem {
 
     public FeedItem() {
         photoAttachments = new ArrayList<>();

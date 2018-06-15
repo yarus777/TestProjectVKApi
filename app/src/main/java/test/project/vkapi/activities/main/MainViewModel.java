@@ -4,9 +4,7 @@ package test.project.vkapi.activities.main;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
-import android.support.design.widget.NavigationView;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -16,26 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import test.project.vkapi.BR;
 import test.project.vkapi.adapters.FeedAdapter;
-import test.project.vkapi.core.api.ApiCallback;
-import test.project.vkapi.core.api.VkApi;
+import test.project.vkapi.core.User;
 import test.project.vkapi.core.api.feed.FeedItem;
 import test.project.vkapi.core.api.feed.FeedList;
 import test.project.vkapi.core.api.feed.FeedResponse;
 import test.project.vkapi.core.api.user.UserResponse;
-import test.project.vkapi.core.api.user.UsersResponse;
-import test.project.vkapi.core.db.AppRepository;
 import test.project.vkapi.core.db.IAppRepository;
 import test.project.vkapi.core.user.UserManager;
-import test.project.vkapi.databinding.NavHeaderMainBinding;
 
 
 public class MainViewModel extends BaseObservable {
@@ -48,9 +36,9 @@ public class MainViewModel extends BaseObservable {
     //public final ItemBinding<FeedItem> itemBinding = ItemBinding.of(BR.feedItem, R.layout.feed_item);
     List<FeedItem> feeds = new ArrayList<>();
     List<UserResponse> users = new ArrayList<>();
+    User user;
 
     private IAppRepository iAppRepository;
-    private Disposable disposable;
 
     @Inject
     public MainViewModel(IAppRepository vkRepository, UserManager userManager) {
@@ -98,7 +86,19 @@ public class MainViewModel extends BaseObservable {
                 }
             }
         });
-        iAppRepository.getUsers().subscribe(new Consumer<UsersResponse>() {
+
+        iAppRepository.getUsers().subscribe(new Consumer<User>() {
+            @Override
+            public void accept(User u) throws Exception {
+                user = u;
+                notifyPropertyChanged(BR.userName);
+                notifyPropertyChanged(BR.imageUrl);
+            }
+        });
+
+
+
+        /*iAppRepository.getUsers().subscribe(new Consumer<UsersResponse>() {
             @Override
             public void accept(UsersResponse usersResponse) throws Exception {
                 for (UserResponse item : usersResponse.getResponse()) {
@@ -107,7 +107,7 @@ public class MainViewModel extends BaseObservable {
                     notifyPropertyChanged(BR.imageUrl);
                 }
             }
-        });
+        });*/
     }
 
 
@@ -140,12 +140,14 @@ public class MainViewModel extends BaseObservable {
 
     @Bindable
     public String getImageUrl() {
-        return users.size() > 0 ? users.get(0).getPhoto() : "";
+        return user != null ? user.getPhoto() : "";
+        //return users.size() > 0 ? users.get(0).getPhoto() : "";
     }
 
     @Bindable
     public String getUserName() {
-        return users.size() > 0 ? users.get(0).getFirstName() + " " + users.get(0).getLastName() : "";
+        return user !=null ? user.getFirstName() + " " + user.getLastName() : "";
+        //return users.size() > 0 ? users.get(0).getFirstName() + " " + users.get(0).getLastName() : "";
     }
 
 
