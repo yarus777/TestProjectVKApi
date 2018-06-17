@@ -25,7 +25,6 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
 
     private static final int AUTH_CODE = 8237;
 
-
     @Inject
     MainViewModel mainViewModel;
 
@@ -33,7 +32,6 @@ public class MainActivity extends BaseActivity implements MainViewModel.Observer
     private NavigationView navigationView;
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

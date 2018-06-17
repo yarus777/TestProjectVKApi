@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import test.project.vkapi.R;
-import test.project.vkapi.core.api.feed.attachments.PhotoItem;
+import test.project.vkapi.core.feeds.api.models.attachments.PhotoItem;
 import test.project.vkapi.databinding.PhotoItemBinding;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoHolder> {

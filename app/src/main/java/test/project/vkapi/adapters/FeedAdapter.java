@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import test.project.vkapi.R;
-import test.project.vkapi.core.api.feed.FeedItem;
-import test.project.vkapi.core.api.feed.FeedList;
-import test.project.vkapi.core.api.feed.GroupItem;
+import test.project.vkapi.core.feeds.api.models.FeedItem;
+import test.project.vkapi.core.feeds.api.models.FeedList;
 import test.project.vkapi.databinding.FeedItemBinding;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedHolder> {

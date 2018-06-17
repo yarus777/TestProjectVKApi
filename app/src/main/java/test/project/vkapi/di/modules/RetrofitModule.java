@@ -10,8 +10,7 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import test.project.vkapi.core.api.VkApi;
-import test.project.vkapi.core.api.feed.FeedConverterFactory;
-import test.project.vkapi.core.api.feed.ResponseConverter;
+import test.project.vkapi.core.feeds.api.models.FeedConverterFactory;
 
 @Module
 public class RetrofitModule {

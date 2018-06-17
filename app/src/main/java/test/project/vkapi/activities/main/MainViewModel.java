@@ -1,6 +1,5 @@
 package test.project.vkapi.activities.main;
 
-
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
@@ -14,35 +13,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import test.project.vkapi.BR;
 import test.project.vkapi.adapters.FeedAdapter;
-import test.project.vkapi.core.User;
-import test.project.vkapi.core.api.feed.FeedItem;
-import test.project.vkapi.core.api.feed.FeedList;
-import test.project.vkapi.core.api.feed.FeedResponse;
-import test.project.vkapi.core.api.user.UserResponse;
-import test.project.vkapi.core.db.IAppRepository;
+import test.project.vkapi.core.feeds.models.Feed;
+import test.project.vkapi.core.user.User;
+import test.project.vkapi.core.feeds.api.models.FeedItem;
+import test.project.vkapi.core.user.UserRepository;
+import test.project.vkapi.core.user.api.models.UserResponse;
+import test.project.vkapi.core.feeds.FeedRepository;
 import test.project.vkapi.core.user.UserManager;
 
 
 public class MainViewModel extends BaseObservable {
 
+    private final UserRepository userRepository;
     private final UserManager userManager;
     private List<Observer> observers = new ArrayList<>();
     private FeedAdapter adapter;
 
-    //public final ObservableList<FeedItem> feeds = new ObservableArrayList<>();
-    //public final ItemBinding<FeedItem> itemBinding = ItemBinding.of(BR.feedItem, R.layout.feed_item);
     List<FeedItem> feeds = new ArrayList<>();
     List<UserResponse> users = new ArrayList<>();
     User user;
 
-    private IAppRepository iAppRepository;
+    private FeedRepository feedRepository;
 
     @Inject
-    public MainViewModel(IAppRepository vkRepository, UserManager userManager) {
-        iAppRepository = vkRepository;
+    public MainViewModel(FeedRepository vkRepository, UserRepository userRepository, UserManager userManager) {
+        feedRepository = vkRepository;
+        this.userRepository = userRepository;
         this.userManager = userManager;
         adapter = new FeedAdapter();
     }
@@ -76,38 +78,27 @@ public class MainViewModel extends BaseObservable {
     }
 
     private void loadData() {
-        iAppRepository.getFeed().subscribe(new Consumer<FeedResponse>() {
+        feedRepository.getFeed().subscribe(new Consumer<List<Feed>>() {
             @Override
-            public void accept(FeedResponse feedResponse) throws Exception {
-                FeedList feedList = feedResponse.getFeedList();
-                feeds.addAll(feedList.getItems());
+            public void accept(List<Feed> feeds) throws Exception {
                 if (feeds.size() > 0) {
-                    adapter.setItems(feeds, feedList);
+                    adapter.setItems(feeds);
                 }
             }
         });
 
-        iAppRepository.getUsers().subscribe(new Consumer<User>() {
-            @Override
-            public void accept(User u) throws Exception {
-                user = u;
-                notifyPropertyChanged(BR.userName);
-                notifyPropertyChanged(BR.imageUrl);
-            }
-        });
-
-
-
-        /*iAppRepository.getUsers().subscribe(new Consumer<UsersResponse>() {
-            @Override
-            public void accept(UsersResponse usersResponse) throws Exception {
-                for (UserResponse item : usersResponse.getResponse()) {
-                    users.add(item);
-                    notifyPropertyChanged(BR.userName);
-                    notifyPropertyChanged(BR.imageUrl);
-                }
-            }
-        });*/
+        userRepository
+                .getUser()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<User>() {
+                    @Override
+                    public void accept(User u) throws Exception {
+                        user = u;
+                        notifyPropertyChanged(BR.userName);
+                        notifyPropertyChanged(BR.imageUrl);
+                    }
+                });
     }
 
 

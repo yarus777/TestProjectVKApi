@@ -4,7 +4,6 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
-import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -12,8 +11,8 @@ import com.bumptech.glide.request.RequestOptions;
 
 import test.project.vkapi.adapters.FeedAdapter;
 import test.project.vkapi.adapters.PhotoAdapter;
-import test.project.vkapi.core.api.feed.FeedItem;
-import test.project.vkapi.core.api.feed.PostInfoSource;
+import test.project.vkapi.core.feeds.api.models.FeedItem;
+import test.project.vkapi.core.feeds.api.models.PostInfoSource;
 
 public class FeedItemViewModel extends BaseObservable {
     private final FeedItem item;

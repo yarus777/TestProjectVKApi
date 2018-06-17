@@ -3,6 +3,8 @@ package test.project.vkapi.di.modules;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.modelmapper.ModelMapper;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -24,5 +26,11 @@ public class DataModule {
     DataStorage provideDataStorage() {
         SharedPreferences prefs = context.getSharedPreferences(PREFS_KEY, Context.MODE_PRIVATE);
         return new SharedPrefsDataStorage(prefs);
+    }
+
+    @Singleton
+    @Provides
+    ModelMapper provideMapper() {
+        return new ModelMapper();
     }
 }
