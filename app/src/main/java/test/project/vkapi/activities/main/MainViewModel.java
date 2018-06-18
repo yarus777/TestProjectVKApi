@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -21,9 +22,7 @@ import test.project.vkapi.BR;
 import test.project.vkapi.adapters.FeedAdapter;
 import test.project.vkapi.core.feeds.models.Feed;
 import test.project.vkapi.core.user.User;
-import test.project.vkapi.core.feeds.api.models.FeedItem;
 import test.project.vkapi.core.user.UserRepository;
-import test.project.vkapi.core.user.api.models.UserResponse;
 import test.project.vkapi.core.feeds.FeedRepository;
 import test.project.vkapi.core.user.UserManager;
 
@@ -31,19 +30,16 @@ import test.project.vkapi.core.user.UserManager;
 public class MainViewModel extends BaseObservable {
 
     private final UserRepository userRepository;
+    private final FeedRepository feedRepository;
     private final UserManager userManager;
     private List<Observer> observers = new ArrayList<>();
     private FeedAdapter adapter;
 
-    List<FeedItem> feeds = new ArrayList<>();
-    List<UserResponse> users = new ArrayList<>();
-    User user;
-
-    private FeedRepository feedRepository;
+    private User user;
 
     @Inject
-    public MainViewModel(FeedRepository vkRepository, UserRepository userRepository, UserManager userManager) {
-        feedRepository = vkRepository;
+    public MainViewModel(@Named("API") FeedRepository feedRepository, UserRepository userRepository, UserManager userManager) {
+        this.feedRepository = feedRepository;
         this.userRepository = userRepository;
         this.userManager = userManager;
         adapter = new FeedAdapter();
@@ -78,14 +74,17 @@ public class MainViewModel extends BaseObservable {
     }
 
     private void loadData() {
-        feedRepository.getFeed().subscribe(new Consumer<List<Feed>>() {
-            @Override
-            public void accept(List<Feed> feeds) throws Exception {
-                if (feeds.size() > 0) {
-                    adapter.setItems(feeds);
-                }
-            }
-        });
+        feedRepository.getFeed()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<Feed>>() {
+                    @Override
+                    public void accept(List<Feed> feeds) throws Exception {
+                        if (feeds.size() > 0) {
+                            adapter.setItems(feeds);
+                        }
+                    }
+                });
 
         userRepository
                 .getUser()
@@ -132,13 +131,11 @@ public class MainViewModel extends BaseObservable {
     @Bindable
     public String getImageUrl() {
         return user != null ? user.getPhoto() : "";
-        //return users.size() > 0 ? users.get(0).getPhoto() : "";
     }
 
     @Bindable
     public String getUserName() {
-        return user !=null ? user.getFirstName() + " " + user.getLastName() : "";
-        //return users.size() > 0 ? users.get(0).getFirstName() + " " + users.get(0).getLastName() : "";
+        return user != null ? user.getFirstName() + " " + user.getLastName() : "";
     }
 
 

@@ -1,10 +1,8 @@
 package test.project.vkapi.core.feeds.api.models.attachments;
 
-import android.databinding.BaseObservable;
-
 import com.google.gson.annotations.SerializedName;
 
-public class AttachmentItem extends BaseObservable {
+public class AttachmentItem  {
     @SerializedName("type")
     private String type;
 

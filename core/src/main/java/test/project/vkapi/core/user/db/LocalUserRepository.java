@@ -18,7 +18,7 @@ public class LocalUserRepository implements UserRepository, UserStorage {
     private final ModelMapper mapper;
 
     @Inject
-    public LocalUserRepository(UserDAO userDao, ModelMapper mapper) {
+    LocalUserRepository(UserDAO userDao, ModelMapper mapper) {
         this.dao = userDao;
         this.mapper = mapper;
     }
@@ -36,6 +36,6 @@ public class LocalUserRepository implements UserRepository, UserStorage {
 
     @Override
     public void saveUser(User user) {
-
+        //dao.insert(user);??
     }
 }

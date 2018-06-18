@@ -15,8 +15,8 @@ import test.project.vkapi.di.modules.RetrofitModule;
         RetrofitModule.class,
         AppModule.class,
         DataModule.class,
-        FeedModule.class,
         DatabaseModule.class,
+        FeedModule.class,
         UserModule.class
 })
 @Singleton

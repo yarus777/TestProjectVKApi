@@ -31,4 +31,10 @@ public class FeedModule {
     FeedRepository provideApiRepository(ApiFeedRepository apiFeedRepository) {
         return apiFeedRepository;
     }
+
+    @Provides
+    @Singleton
+    FeedStorage provideFeedStorage(LocalFeedRepository feedRepository) {
+        return feedRepository;
+    }
 }

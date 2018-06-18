@@ -1,21 +1,18 @@
-package test.project.vkapi.core.feeds.api.models.attachments;
+package test.project.vkapi.core.feeds.models;
 
-import com.google.gson.annotations.SerializedName;
+public class FeedVideoAttachment {
 
-public class VideoItem extends AttachmentItem {
-
-    @SerializedName("title")
     private String title;
 
-    @SerializedName("duration")
     private int duration;
 
-    @SerializedName("description")
     private String description;
 
-    @SerializedName("access_key")
     private String access_key;
 
+    public FeedVideoAttachment() {
+
+    }
 
     public String getTitle() {
         return title;

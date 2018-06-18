@@ -5,7 +5,7 @@
 
         <variable
             name="photoItem"
-            type="test.project.vkapi.core.api.feed.attachments.PhotoItem" />
+            type="test.project.vkapi.core.feeds.models.FeedPhotoAttachment" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -19,6 +19,6 @@
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:scaleType="fitCenter"
-            app:loadImage="@{photoItem.imageUrl}" />
+            app:loadImage="@{photoItem.url}" />
     </LinearLayout>
 </layout>

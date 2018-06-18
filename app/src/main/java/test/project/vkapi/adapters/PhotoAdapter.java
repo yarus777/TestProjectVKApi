@@ -10,11 +10,12 @@ import java.util.List;
 
 import test.project.vkapi.R;
 import test.project.vkapi.core.feeds.api.models.attachments.PhotoItem;
+import test.project.vkapi.core.feeds.models.FeedPhotoAttachment;
 import test.project.vkapi.databinding.PhotoItemBinding;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoHolder> {
 
-    private List<PhotoItem> items = new ArrayList<>();
+    private List<FeedPhotoAttachment> items = new ArrayList<>();
 
     @Override
     public PhotoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -33,7 +34,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoHolder> {
         return items.size();
     }
 
-    public void setItems(List<PhotoItem> photos) {
+    public void setItems(List<FeedPhotoAttachment> photos) {
         if (photos != null) {
             items.clear();
             items.addAll(photos);

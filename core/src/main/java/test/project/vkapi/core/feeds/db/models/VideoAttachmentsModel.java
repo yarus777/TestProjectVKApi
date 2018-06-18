@@ -1,21 +1,30 @@
-package test.project.vkapi.core.feeds.api.models.attachments;
+package test.project.vkapi.core.feeds.db.models;
 
-import com.google.gson.annotations.SerializedName;
 
-public class VideoItem extends AttachmentItem {
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 
-    @SerializedName("title")
+@Entity
+public class VideoAttachmentsModel {
+
+    @PrimaryKey
+    private int id;
+
     private String title;
 
-    @SerializedName("duration")
     private int duration;
 
-    @SerializedName("description")
     private String description;
 
-    @SerializedName("access_key")
     private String access_key;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

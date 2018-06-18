@@ -13,17 +13,16 @@ import test.project.vkapi.adapters.FeedAdapter;
 import test.project.vkapi.adapters.PhotoAdapter;
 import test.project.vkapi.core.feeds.api.models.FeedItem;
 import test.project.vkapi.core.feeds.api.models.PostInfoSource;
+import test.project.vkapi.core.feeds.models.Feed;
 
 public class FeedItemViewModel extends BaseObservable {
-    private final FeedItem item;
+    private final Feed item;
     private final PhotoAdapter adapter;
-    private final PostInfoSource postInfoSource;
 
-    public FeedItemViewModel(FeedItem item, PostInfoSource postInfoSource) {
+    public FeedItemViewModel(Feed item) {
         this.item = item;
-        this.postInfoSource = postInfoSource;
         adapter = new PhotoAdapter();
-        adapter.setItems((item.getPhotoAttachments().size() > 1) ? (item.getPhotoAttachments().subList(1, item.getPhotoAttachments().size() - 1)) : null);
+        adapter.setItems((item.getPhotoAttachmentList().size() > 1) ? (item.getPhotoAttachmentList().subList(1, item.getPhotoAttachmentList().size() - 1)) : null);
     }
 
     @Bindable
@@ -33,12 +32,12 @@ public class FeedItemViewModel extends BaseObservable {
 
     @Bindable
     public int getLikesCount() {
-        return item.getLikes().getLikeCount();
+        return item.getLikesCount();
     }
 
     @Bindable
     public int getCommentsCount() {
-        return item.getComments().getCommentCount();
+        return item.getCommentsCount();
     }
 
     @Bindable
@@ -53,12 +52,12 @@ public class FeedItemViewModel extends BaseObservable {
 
     @Bindable
     public String getPostUserText() {
-        return postInfoSource.getPostUserText();
+        return item.getSource().getPostUserText();
     }
 
     @Bindable
     public String getPostUserImg() {
-        return postInfoSource.getImgUrl();
+        return item.getSource().getImgUrl();
     }
 
     @BindingAdapter({"app:url"})
@@ -71,7 +70,7 @@ public class FeedItemViewModel extends BaseObservable {
 
     @Bindable
     public String getAttachmentImg() {
-        return item.getPhotoAttachments().size() > 0 ? item.getPhotoAttachments().get(0).getImageUrl() : "";
+        return item.getPhotoAttachmentList().size() > 0 ? item.getPhotoAttachmentList().get(0).getUrl() : "";
     }
 
     @BindingAdapter({"app:attachmentUrl"})

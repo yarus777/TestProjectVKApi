@@ -1,6 +1,7 @@
 package test.project.vkapi.core.user.db.models;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 
 import java.util.List;
@@ -16,5 +17,9 @@ public interface UserDAO {
 
     @Query("SELECT * FROM users WHERE id = :id")
     Single<UserDBModel> getById(int id);
+
+    @Insert
+    void insert(UserDBModel user);
+
 
 }
