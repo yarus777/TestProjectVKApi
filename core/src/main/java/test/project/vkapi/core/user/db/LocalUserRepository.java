@@ -36,6 +36,6 @@ public class LocalUserRepository implements UserRepository, UserStorage {
 
     @Override
     public void saveUser(User user) {
-        //dao.insert(user);??
+
     }
 }

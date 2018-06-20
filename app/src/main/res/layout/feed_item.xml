@@ -59,7 +59,8 @@
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
                 android:scaleType="fitCenter"
-                app:attachmentUrl="@{feedItem.attachmentImg}" />
+                app:attachmentUrl="@{feedItem.attachmentImg}"
+                android:visibility="@{feedItem.photoAttachmentVisibility}"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/photo_recycler"
@@ -71,12 +72,43 @@
                 android:orientation="vertical"
                 app:adapter="@{feedItem.adapter}"
                 app:layoutManager="android.support.v7.widget.GridLayoutManager"
-                app:spanCount="3" />
+                app:spanCount="3"
+                android:visibility="@{feedItem.photoAttachmentsRecyclerVisibility}"/>
+
+            <LinearLayout
+                android:id="@+id/link_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_below="@+id/photo_recycler"
+                android:layout_margin="5dp"
+                android:visibility="@{feedItem.linkLayoutVisibility}">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:autoLink="all"
+                    android:text="@{feedItem.linkTitle}"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:autoLink="all"
+                    android:text="@{feedItem.linkDescription}" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="all"
+                    android:text="@{feedItem.linkUrl}" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/photo_recycler"
+                android:layout_below="@+id/link_layout"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="5dp">

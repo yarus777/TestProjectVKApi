@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -22,7 +23,7 @@ public class FeedItemViewModel extends BaseObservable {
     public FeedItemViewModel(Feed item) {
         this.item = item;
         adapter = new PhotoAdapter();
-        adapter.setItems((item.getPhotoAttachmentList().size() > 1) ? (item.getPhotoAttachmentList().subList(1, item.getPhotoAttachmentList().size() - 1)) : null);
+        adapter.setItems(getPhotoAttachmentsRecyclerVisibility() ? (item.getPhotoAttachmentList().subList(1, item.getPhotoAttachmentList().size() - 1)) : null);
     }
 
     @Bindable
@@ -70,7 +71,7 @@ public class FeedItemViewModel extends BaseObservable {
 
     @Bindable
     public String getAttachmentImg() {
-        return item.getPhotoAttachmentList().size() > 0 ? item.getPhotoAttachmentList().get(0).getUrl() : "";
+        return getPhotoAttachmentVisibility() ? item.getPhotoAttachmentList().get(0).getUrl() : "";
     }
 
     @BindingAdapter({"app:attachmentUrl"})
@@ -80,5 +81,39 @@ public class FeedItemViewModel extends BaseObservable {
                 .into(imageView);
     }
 
+    @Bindable
+    public boolean getLinkLayoutVisibility() {
+        return item.getLinkAttachmentList().size() > 0;
+    }
+
+    @Bindable
+    public String getLinkUrl() {
+        return getLinkLayoutVisibility() ? item.getLinkAttachmentList().get(0).getUrl() : "";
+    }
+
+    @Bindable
+    public String getLinkTitle() {
+        return getLinkLayoutVisibility() ? item.getLinkAttachmentList().get(0).getTitle() : "";
+    }
+
+    @Bindable
+    public String getLinkDescription() {
+        return getLinkLayoutVisibility() ? item.getLinkAttachmentList().get(0).getDescription(): "";
+    }
+
+    @Bindable
+    public boolean getPhotoAttachmentsRecyclerVisibility() {
+        return item.getPhotoAttachmentList().size() > 1;
+    }
+
+    @Bindable
+    public boolean getPhotoAttachmentVisibility() {
+        return item.getPhotoAttachmentList().size() > 0;
+    }
+
+    @BindingAdapter("android:visibility")
+    public static void setVisibility(View view, Boolean value) {
+        view.setVisibility(value ? View.VISIBLE : View.GONE);
+    }
 
 }
