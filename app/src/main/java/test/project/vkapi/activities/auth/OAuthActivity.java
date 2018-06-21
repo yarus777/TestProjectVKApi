@@ -65,7 +65,7 @@ public class OAuthActivity extends BaseActivity {
                 .appendQueryParameter("client_id", String.valueOf(getResources().getInteger(R.integer.com_vk_sdk_AppId)))
                 .appendQueryParameter("redirect_uri", REDIRECT_URL)
                 .appendQueryParameter("response_type", "token")
-                .appendQueryParameter("scope", "wall,friends")
+                .appendQueryParameter("scope", "wall,friends,audio,video")
                 .appendQueryParameter("v", "5.77");
         webView.loadUrl(builder.build().toString());
     }

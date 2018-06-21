@@ -14,6 +14,7 @@ public class Feed {
     private List<FeedPhotoAttachment> photoAttachmentList;
     private List<FeedVideoAttachment> videoAttachmentList;
 
+
     private PostInfoSource source;
 
     public Feed() {
@@ -95,4 +96,5 @@ public class Feed {
     public void setVideoAttachmentList(List<FeedVideoAttachment> videoAttachmentList) {
         this.videoAttachmentList = videoAttachmentList;
     }
+
 }

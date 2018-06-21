@@ -70,45 +70,40 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:orientation="vertical"
-                app:adapter="@{feedItem.adapter}"
+                app:photoAdapter="@{feedItem.photoAdapter}"
                 app:layoutManager="android.support.v7.widget.GridLayoutManager"
                 app:spanCount="3"
                 android:visibility="@{feedItem.photoAttachmentsRecyclerVisibility}"/>
 
-            <LinearLayout
-                android:id="@+id/link_layout"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/link_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:layout_below="@+id/photo_recycler"
-                android:layout_margin="5dp"
-                android:visibility="@{feedItem.linkLayoutVisibility}">
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical"
+                app:linkAdapter="@{feedItem.linkAdapter}"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                android:visibility="@{feedItem.getLinkAttachmentsRecyclerVisibility}"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:autoLink="all"
-                    android:text="@{feedItem.linkTitle}"
-                    android:textStyle="bold" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:autoLink="all"
-                    android:text="@{feedItem.linkDescription}" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="all"
-                    android:text="@{feedItem.linkUrl}" />
 
-            </LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/audio_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/link_recycler"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical"
+                app:audioAdapter="@{feedItem.audioAdapter}"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                android:visibility="@{feedItem.getAudioAttachmentsRecyclerVisibility}"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/link_layout"
+                android:layout_below="@+id/audio_recycler"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="5dp">

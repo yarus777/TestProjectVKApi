@@ -52,7 +52,7 @@ public class ApiFeedRepository implements FeedRepository {
     @Override
     public Observable<List<Feed>> getFeed() {
         return api
-                .getFeed(userManager.getToken(), "5.78", 100, "post")
+                .getFeed(userManager.getToken(), "5.77", 100, "post")
                 .map(new Function<FeedResponse, FeedList>() {
                     @Override
                     public FeedList apply(FeedResponse feedResponse) throws Exception {

@@ -16,6 +16,12 @@ public class VideoItem extends AttachmentItem {
     @SerializedName("access_key")
     private String access_key;
 
+    @SerializedName("id")
+    private String id;
+
+    @SerializedName("owner_id")
+    private String ownerId;
+
 
     public String getTitle() {
         return title;
@@ -47,5 +53,21 @@ public class VideoItem extends AttachmentItem {
 
     public void setAccess_key(String access_key) {
         this.access_key = access_key;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

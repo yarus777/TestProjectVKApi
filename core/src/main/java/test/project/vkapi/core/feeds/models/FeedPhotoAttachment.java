@@ -1,13 +1,6 @@
 package test.project.vkapi.core.feeds.models;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.BindingAdapter;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-
-public class FeedPhotoAttachment extends BaseObservable {
+public class FeedPhotoAttachment {
 
     private String url;
 
@@ -25,7 +18,6 @@ public class FeedPhotoAttachment extends BaseObservable {
         this.height = height;
     }
 
-    @Bindable
     public String getUrl() {
         return url;
     }
@@ -48,13 +40,5 @@ public class FeedPhotoAttachment extends BaseObservable {
 
     public void setHeight(int height) {
         this.height = height;
-    }
-
-
-    @BindingAdapter({"loadImage"})
-    public static void loadImage(ImageView view, String url) {
-        Glide.with(view.getContext())
-                .load(url)
-                .into(view);
     }
 }

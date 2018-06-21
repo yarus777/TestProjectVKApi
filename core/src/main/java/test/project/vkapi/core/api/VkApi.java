@@ -13,4 +13,5 @@ public interface VkApi {
 
     @GET("method/users.get")
     Single<UsersResponse> getUsers(@Query("access_token") String accessToken, @Query("v") String version, @Query("fields") String fields);
+
 }
