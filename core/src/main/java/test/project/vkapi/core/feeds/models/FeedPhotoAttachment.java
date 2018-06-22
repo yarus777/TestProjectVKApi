@@ -2,6 +2,8 @@ package test.project.vkapi.core.feeds.models;
 
 public class FeedPhotoAttachment {
 
+    private String id;
+
     private String url;
 
     private int width;
@@ -40,5 +42,13 @@ public class FeedPhotoAttachment {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -33,7 +33,8 @@ public class GroupItem implements PostInfoSource{
     }
 
     @Override
-    public String getPostUserText() {
+    public String getUserName() {
         return this.name;
     }
+
 }

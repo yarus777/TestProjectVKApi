@@ -2,6 +2,8 @@ package test.project.vkapi.core.feeds.models;
 
 public class FeedAudioAttachment {
 
+    private String id;
+
     private String artist;
 
     private String title;
@@ -44,5 +46,13 @@ public class FeedAudioAttachment {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

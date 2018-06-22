@@ -80,9 +80,11 @@ public class ResponseConverter implements Converter<ResponseBody, FeedResponse> 
         FeedItem item = new FeedItem();
         item.setType(type);
         item.setSourceId(json.getString("source_id"));
+        item.setPostId(json.getString("post_id"));
         item.setText(json.getString("text"));
         item.setLikes(gson.fromJson(json.getString("likes"), LikeItem.class));
         item.setComments(gson.fromJson(json.getString("comments"), CommentItem.class));
+
 
         if (json.has("attachments")) {
             JSONArray attachments = json.getJSONArray("attachments");

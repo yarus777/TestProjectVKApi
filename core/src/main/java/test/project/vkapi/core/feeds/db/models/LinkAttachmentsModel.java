@@ -1,13 +1,18 @@
 package test.project.vkapi.core.feeds.db.models;
 
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "links", foreignKeys = {@ForeignKey(entity = FeedDBModel.class, parentColumns = "id", childColumns = "feed_id")},
+        indices = {@Index(value = {"feed_id"})})
 public class LinkAttachmentsModel {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     private int id;
 
     private String url;
@@ -15,6 +20,9 @@ public class LinkAttachmentsModel {
     private String title;
 
     private String description;
+
+    @ColumnInfo(name = "feed_id")
+    private String feedId;
 
     public int getId() {
         return id;
@@ -46,5 +54,13 @@ public class LinkAttachmentsModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(String feedId) {
+        this.feedId = feedId;
     }
 }

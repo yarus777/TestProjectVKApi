@@ -4,14 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class PhotoItem extends AttachmentItem {
+public class PhotoItem  {
 
     @SerializedName("sizes")
     private List<SizesItem> sizes;
-
-    public void setSizes(List<SizesItem> sizes) {
-        this.sizes = sizes;
-    }
 
     public SizesItem chooseBiggestPhotoItem() {
         SizesItem choseItem = new SizesItem();
@@ -23,6 +19,10 @@ public class PhotoItem extends AttachmentItem {
         return choseItem;
     }
 
+
+    public void setSizes(List<SizesItem> sizes) {
+        this.sizes = sizes;
+    }
 
 }
 

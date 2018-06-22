@@ -33,7 +33,7 @@ public class ProfileItem implements PostInfoSource {
     }
 
     @Override
-    public String getPostUserText() {
+    public String getUserName() {
         return this.firstName + " " + this.lastName;
     }
 }

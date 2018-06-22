@@ -17,7 +17,7 @@ public class PhotoItemViewModel extends BaseObservable {
         this.item = item;
     }
 
-    @BindingAdapter({"app:loadImage"})
+    @BindingAdapter({"loadImage"})
     public static void loadImage(ImageView view, String url) {
         Glide.with(view.getContext())
                 .load(url)

@@ -66,6 +66,8 @@ public class ApiFeedRepository implements FeedRepository {
                         List<FeedItem> responseFeeds = feedList.getItems();
                         HashMap<String, PostInfoSource> sourceHashMap = feedList.getInfoItems();
 
+                        Feed feed;
+
                         for (FeedItem feedItem : responseFeeds) {
 
                             List<FeedAudioAttachment> audioList = new ArrayList<>();
@@ -92,9 +94,15 @@ public class ApiFeedRepository implements FeedRepository {
                                 SizesItem sizesItem = photoItem.chooseBiggestPhotoItem();
                                 photoList.add(new FeedPhotoAttachment(sizesItem.getUrl(), sizesItem.getWidth(), sizesItem.getHeight()));
                             }
-
-                            feeds.add(new Feed(feedItem.getText(), feedItem.getLikes().getLikeCount(), feedItem.getComments().getCommentCount(),
-                                    sourceHashMap.get(feedItem.getSourceId()), audioList, linkList, videoList, photoList));
+                            feed = mapper.map(feedItem, Feed.class);
+                            feed.setAudioAttachmentList(audioList);
+                            feed.setPhotoAttachmentList(photoList);
+                            feed.setLinkAttachmentList(linkList);
+                            feed.setVideoAttachmentList(videoList);
+                            feed.setSource(sourceHashMap.get(feedItem.getSourceId()));
+                            feeds.add(feed);
+                            //feeds.add(new Feed(feedItem.getText(), feedItem.getLikes().getLikeCount(), feedItem.getComments().getCommentCount(),
+                            //       sourceHashMap.get(feedItem.getSourceId()), audioList, linkList, videoList, photoList));
                         }
                         return feeds;
                     }

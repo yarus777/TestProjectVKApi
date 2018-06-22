@@ -20,6 +20,9 @@ public class FeedItem {
         linkAttachments = new ArrayList<>();
     }
 
+    @SerializedName("post_id")
+    private String postId;
+
     @SerializedName("source_id")
     private String sourceId;
 
@@ -110,5 +113,13 @@ public class FeedItem {
 
     public void setSourceId(String sourceId) {
         this.sourceId = sourceId.replace("-", "");
+    }
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 }

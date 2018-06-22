@@ -115,12 +115,12 @@ public class MainViewModel extends BaseObservable {
         return adapter;
     }
 
-    @BindingAdapter({"app:adapter"})
+    @BindingAdapter({"adapter"})
     public static void bind(RecyclerView recyclerView, FeedAdapter adapter) {
         recyclerView.setAdapter(adapter);
     }
 
-    @BindingAdapter({"app:loadAvatar"})
+    @BindingAdapter({"loadAvatar"})
     public static void loadImage(ImageView view, String imageUrl) {
         Glide.with(view.getContext())
                 .load(imageUrl)

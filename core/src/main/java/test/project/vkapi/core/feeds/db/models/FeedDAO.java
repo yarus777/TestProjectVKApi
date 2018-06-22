@@ -1,6 +1,8 @@
 package test.project.vkapi.core.feeds.db.models;
 
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
 import java.util.List;
@@ -16,5 +18,8 @@ public interface FeedDAO {
 
     @Query("SELECT * FROM feeds WHERE id = :id")
     Single<FeedDBModel> getById(int id);
+
+    @Insert
+    void insert(FeedDBModel model);
 
 }

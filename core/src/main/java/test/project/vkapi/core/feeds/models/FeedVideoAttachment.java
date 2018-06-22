@@ -2,6 +2,8 @@ package test.project.vkapi.core.feeds.models;
 
 public class FeedVideoAttachment {
 
+    private String id;
+
     private String title;
 
     private int duration;
@@ -9,10 +11,6 @@ public class FeedVideoAttachment {
     private String description;
 
     private String accessKey;
-
-    private String id;
-
-    private String ownerId;
 
     public FeedVideoAttachment() {
 
@@ -58,11 +56,4 @@ public class FeedVideoAttachment {
         this.id = id;
     }
 
-    public String getOwnerId() {
-        return ownerId;
-    }
-
-    public void setOwnerId(String ownerId) {
-        this.ownerId = ownerId;
-    }
 }

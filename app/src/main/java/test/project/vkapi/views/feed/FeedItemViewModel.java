@@ -53,7 +53,7 @@ public class FeedItemViewModel extends BaseObservable {
         return linkAdapter;
     }
 
-    @BindingAdapter({"app:linkAdapter"})
+    @BindingAdapter({"linkAdapter"})
     public static void bind(RecyclerView recyclerView, LinkAdapter linkAdapter) {
         recyclerView.setAdapter(linkAdapter);
     }
@@ -63,7 +63,7 @@ public class FeedItemViewModel extends BaseObservable {
         return audioAdapter;
     }
 
-    @BindingAdapter({"app:audioAdapter"})
+    @BindingAdapter({"audioAdapter"})
     public static void bind(RecyclerView recyclerView, AudioAdapter audioAdapter) {
         recyclerView.setAdapter(audioAdapter);
     }
@@ -73,14 +73,14 @@ public class FeedItemViewModel extends BaseObservable {
         return photoAdapter;
     }
 
-    @BindingAdapter({"app:photoAdapter"})
+    @BindingAdapter({"photoAdapter"})
     public static void bind(RecyclerView recyclerView, PhotoAdapter photoAdapter) {
         recyclerView.setAdapter(photoAdapter);
     }
 
     @Bindable
     public String getPostUserText() {
-        return item.getSource().getPostUserText();
+        return item.getSource().getUserName();
     }
 
     @Bindable
@@ -88,7 +88,7 @@ public class FeedItemViewModel extends BaseObservable {
         return item.getSource().getImgUrl();
     }
 
-    @BindingAdapter({"app:url"})
+    @BindingAdapter({"url"})
     public static void setImg(ImageView imageView, String postUserImg) {
         Glide.with(imageView.getContext())
                 .load(postUserImg)
@@ -101,7 +101,7 @@ public class FeedItemViewModel extends BaseObservable {
         return getPhotoAttachmentVisibility() ? item.getPhotoAttachmentList().get(0).getUrl() : "";
     }
 
-    @BindingAdapter({"app:attachmentUrl"})
+    @BindingAdapter({"attachmentUrl"})
     public static void setAttachmentImg(ImageView imageView, String attachmentUrl) {
         Glide.with(imageView.getContext())
                 .load(attachmentUrl)

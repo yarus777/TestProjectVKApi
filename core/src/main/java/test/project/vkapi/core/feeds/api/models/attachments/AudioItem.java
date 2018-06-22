@@ -2,7 +2,7 @@ package test.project.vkapi.core.feeds.api.models.attachments;
 
 import com.google.gson.annotations.SerializedName;
 
-public class AudioItem extends AttachmentItem {
+public class AudioItem {
 
     @SerializedName("artist")
     private String artist;
@@ -47,4 +47,5 @@ public class AudioItem extends AttachmentItem {
     public void setUrl(String url) {
         this.url = url;
     }
+
 }

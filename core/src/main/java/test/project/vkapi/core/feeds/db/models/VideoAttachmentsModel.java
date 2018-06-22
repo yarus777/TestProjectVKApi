@@ -1,13 +1,18 @@
 package test.project.vkapi.core.feeds.db.models;
 
 
+import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "videos", foreignKeys = {@ForeignKey(entity = FeedDBModel.class, parentColumns = "id", childColumns = "feed_id")},
+        indices = {@Index(value = {"feed_id"})})
 public class VideoAttachmentsModel {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     private int id;
 
     private String title;
@@ -16,7 +21,10 @@ public class VideoAttachmentsModel {
 
     private String description;
 
-    private String access_key;
+    private String accessKey;
+
+    @ColumnInfo(name = "feed_id")
+    private String feedId;
 
     public int getId() {
         return id;
@@ -50,11 +58,19 @@ public class VideoAttachmentsModel {
         this.description = description;
     }
 
-    public String getAccess_key() {
-        return access_key;
+    public String getAccessKey() {
+        return accessKey;
     }
 
-    public void setAccess_key(String access_key) {
-        this.access_key = access_key;
+    public void setAccessKey(String accessKey) {
+        this.accessKey = accessKey;
+    }
+
+    public String getFeedId() {
+        return feedId;
+    }
+
+    public void setFeedId(String feedId) {
+        this.feedId = feedId;
     }
 }

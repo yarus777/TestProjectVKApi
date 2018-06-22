@@ -3,7 +3,7 @@ package test.project.vkapi.core.feeds.api.models.attachments;
 import com.google.gson.annotations.SerializedName;
 
 
-public class LinkItem extends AttachmentItem {
+public class LinkItem {
 
     @SerializedName("url")
     private String url;
