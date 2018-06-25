@@ -6,7 +6,7 @@ import test.project.vkapi.core.feeds.api.models.PostInfoSource;
 
 public class Feed {
 
-    private String postId;
+    private String id;
     private String text;
     private int likesCount;
     private int commentsCount;
@@ -97,11 +97,11 @@ public class Feed {
         this.videoAttachmentList = videoAttachmentList;
     }
 
-    public String getPostId() {
-        return postId;
+    public String getId() {
+        return id;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -4,6 +4,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -78,26 +79,38 @@ public class MainViewModel extends BaseObservable {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<List<Feed>>() {
-                    @Override
-                    public void accept(List<Feed> feeds) throws Exception {
-                        if (feeds.size() > 0) {
-                            adapter.setItems(feeds);
-                        }
-                    }
-                });
+                               @Override
+                               public void accept(List<Feed> feeds) throws Exception {
+                                   if (feeds != null && feeds.size() > 0) {
+                                       adapter.setItems(feeds);
+                                   }
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.d("MainViewModel", throwable.getMessage());
+                            }
+                        });
 
         userRepository
                 .getUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<User>() {
-                    @Override
-                    public void accept(User u) throws Exception {
-                        user = u;
-                        notifyPropertyChanged(BR.userName);
-                        notifyPropertyChanged(BR.imageUrl);
-                    }
-                });
+                               @Override
+                               public void accept(User u) throws Exception {
+                                   user = u;
+                                   notifyPropertyChanged(BR.userName);
+                                   notifyPropertyChanged(BR.imageUrl);
+                               }
+                           },
+                        new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                Log.d("MainViewModel", throwable.getMessage());
+                            }
+                        });
     }
 
 

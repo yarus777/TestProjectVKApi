@@ -33,7 +33,7 @@ public class ApiUserRepository implements UserRepository {
     @Override
     public Observable<User> getUser() {
         return api
-                .getUsers(userManager.getToken(), "5.8", "photo_400_orig")
+                .getUsers(userManager.getToken(), "5.80", "photo_400_orig")
                 .map(new Function<UsersResponse, User>() {
                     @Override
                     public User apply(UsersResponse usersResponse) throws Exception {

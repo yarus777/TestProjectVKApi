@@ -9,21 +9,16 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.functions.Function;
-import test.project.vkapi.core.feeds.db.models.AudioAttachmentsModel;
+import test.project.vkapi.core.feeds.FeedRepository;
+import test.project.vkapi.core.feeds.FeedStorage;
 import test.project.vkapi.core.feeds.db.models.FeedDAO;
 import test.project.vkapi.core.feeds.db.models.FeedDBModel;
-import test.project.vkapi.core.feeds.db.models.LinkAttachmentsModel;
-import test.project.vkapi.core.feeds.db.models.PhotoAttachmentsModel;
 import test.project.vkapi.core.feeds.db.models.PostSourceModel;
-import test.project.vkapi.core.feeds.db.models.VideoAttachmentsModel;
 import test.project.vkapi.core.feeds.models.Feed;
-import test.project.vkapi.core.feeds.FeedStorage;
-import test.project.vkapi.core.feeds.FeedRepository;
 import test.project.vkapi.core.feeds.models.FeedAudioAttachment;
 import test.project.vkapi.core.feeds.models.FeedLinkAttachment;
 import test.project.vkapi.core.feeds.models.FeedPhotoAttachment;
 import test.project.vkapi.core.feeds.models.FeedVideoAttachment;
-import test.project.vkapi.core.user.db.models.UserDAO;
 
 public class LocalFeedRepository implements FeedRepository, FeedStorage {
 
@@ -57,10 +52,6 @@ public class LocalFeedRepository implements FeedRepository, FeedStorage {
     @Override
     public void save(List<Feed> feeds) {
         FeedDBModel feedDBModel;
-        PhotoAttachmentsModel photoAttachmentsModel;
-        LinkAttachmentsModel linkAttachmentsModel;
-        VideoAttachmentsModel videoAttachmentsModel;
-        AudioAttachmentsModel audioAttachmentsModel;
         PostSourceModel postSourceModel;
         for (Feed feed : feeds) {
             feedDBModel = mapper.map(feed, FeedDBModel.class);
@@ -69,27 +60,18 @@ public class LocalFeedRepository implements FeedRepository, FeedStorage {
             feedDBModel.setPostId(postSourceModel.getId());
             dao.insert(feedDBModel);
 
-            for (FeedLinkAttachment feedLinkAttachment : feed.getLinkAttachmentList()) {
-                linkAttachmentsModel = mapper.map(feedLinkAttachment, LinkAttachmentsModel.class);
-                linkAttachmentsModel.setFeedId(feed.getPostId());
-                attachmentsRepository.save(linkAttachmentsModel);
+            for (FeedLinkAttachment attachment : feed.getLinkAttachmentList()) {
+                attachmentsRepository.save(feed.getId(), attachment);
             }
-            for (FeedPhotoAttachment feedPhotoAttachment : feed.getPhotoAttachmentList()) {
-                photoAttachmentsModel = mapper.map(feedPhotoAttachment, PhotoAttachmentsModel.class);
-                photoAttachmentsModel.setFeedId(feed.getPostId());
-                attachmentsRepository.save(photoAttachmentsModel);
+            for (FeedPhotoAttachment attachment : feed.getPhotoAttachmentList()) {
+                attachmentsRepository.save(feed.getId(), attachment);
             }
-            for (FeedVideoAttachment feedVideoAttachment : feed.getVideoAttachmentList()) {
-                videoAttachmentsModel = mapper.map(feedVideoAttachment, VideoAttachmentsModel.class);
-                videoAttachmentsModel.setFeedId(feed.getPostId());
-                attachmentsRepository.save(videoAttachmentsModel);
+            for (FeedVideoAttachment attachment : feed.getVideoAttachmentList()) {
+                attachmentsRepository.save(feed.getId(), attachment);
             }
-            for (FeedAudioAttachment feedAudioAttachment : feed.getAudioAttachmentList()) {
-                audioAttachmentsModel = mapper.map(feedAudioAttachment, AudioAttachmentsModel.class);
-                audioAttachmentsModel.setFeedId(feed.getPostId());
-                attachmentsRepository.save(audioAttachmentsModel);
+            for (FeedAudioAttachment attachment : feed.getAudioAttachmentList()) {
+                attachmentsRepository.save(feed.getId(), attachment);
             }
         }
-
     }
 }

@@ -2,7 +2,9 @@ package test.project.vkapi.core.feeds.api.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class FeedResponse {
+import test.project.vkapi.core.api.error.BaseResponse;
+
+public class FeedResponse extends BaseResponse {
     @SerializedName("response")
     private FeedList feedList;
 

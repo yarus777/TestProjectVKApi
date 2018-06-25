@@ -13,6 +13,8 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
+import test.project.vkapi.core.api.error.BaseResponse;
+import test.project.vkapi.core.api.error.ErrorItem;
 import test.project.vkapi.core.feeds.api.models.attachments.AudioItem;
 import test.project.vkapi.core.feeds.api.models.attachments.LinkItem;
 import test.project.vkapi.core.feeds.api.models.attachments.PhotoItem;
@@ -27,49 +29,55 @@ public class ResponseConverter implements Converter<ResponseBody, FeedResponse> 
 
     @Override
     public FeedResponse convert(ResponseBody value) throws IOException {
+        try {
+            JSONObject root = new JSONObject(value.string());
+            if(root.has("error")) {
+                return parseErrorResponse(value.string());
+            } else {
+                return parseResponse(root.getJSONObject("response"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-       /* ErrorResponse errorResponse = gson.fromJson(value.string(), ErrorResponse.class);
-        if (errorResponse.getErrorItem() != null) {
+    private FeedResponse parseErrorResponse(String error) {
+        return gson.fromJson(error, FeedResponse.class);
+    }
 
-        } */
+    private FeedResponse parseResponse(JSONObject root) throws JSONException {
         FeedResponse response = new FeedResponse();
         FeedList list = new FeedList();
         response.setFeedList(list);
         List<FeedItem> itemsRes = new ArrayList<>();
         list.setItems(itemsRes);
 
-        HashMap postInfoItems = new HashMap<String, PostInfoSource>();
+        HashMap<String, PostInfoSource> postInfoItems = new HashMap<>();
         list.setInfoItems(postInfoItems);
+        JSONArray items = root.getJSONArray("items");
+        JSONArray groups = root.getJSONArray("groups");
+        JSONArray profiles = root.getJSONArray("profiles");
+        for (int i = 0; i < items.length(); i++) {
+            FeedItem feedItem = parseItem(items.getJSONObject(i));
+            if (feedItem != null) {
+                itemsRes.add(feedItem);
+            }
+        }
+        for (int j = 0; j < groups.length(); j++) {
+            GroupItem groupItem = gson.fromJson(String.valueOf(groups.getJSONObject(j)), GroupItem.class);
+            if (groupItem != null) {
+                postInfoItems.put(groupItem.getId(), groupItem);
+            }
+        }
 
-        try {
-            JSONObject root = new JSONObject(value.string());
-            JSONArray items = root.getJSONObject("response").getJSONArray("items");
-            JSONArray groups = root.getJSONObject("response").getJSONArray("groups");
-            JSONArray profiles = root.getJSONObject("response").getJSONArray("profiles");
-            for (int i = 0; i < items.length(); i++) {
-                FeedItem feedItem = parseItem(items.getJSONObject(i));
-                if (feedItem != null) {
-                    itemsRes.add(feedItem);
-                }
+        for (int z = 0; z < profiles.length(); z++) {
+            ProfileItem profileItem = gson.fromJson(String.valueOf(profiles.getJSONObject(z)), ProfileItem.class);
+            if (profileItem != null) {
+                postInfoItems.put(profileItem.getId(), profileItem);
             }
-            for (int j = 0; j < groups.length(); j++) {
-                GroupItem groupItem = gson.fromJson(String.valueOf(groups.getJSONObject(j)), GroupItem.class);
-                if (groupItem != null) {
-                    postInfoItems.put(groupItem.getId(), groupItem);
-                }
-            }
-
-            for (int z = 0; z < profiles.length(); z++) {
-                ProfileItem profileItem = gson.fromJson(String.valueOf(profiles.getJSONObject(z)), ProfileItem.class);
-                if (profileItem != null) {
-                    postInfoItems.put(profileItem.getId(), profileItem);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
         return response;
-
     }
 
     private FeedItem parseItem(JSONObject json) throws JSONException {

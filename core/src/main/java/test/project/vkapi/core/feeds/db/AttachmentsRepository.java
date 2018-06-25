@@ -9,6 +9,10 @@ import test.project.vkapi.core.feeds.db.models.AudioAttachmentsModel;
 import test.project.vkapi.core.feeds.db.models.LinkAttachmentsModel;
 import test.project.vkapi.core.feeds.db.models.PhotoAttachmentsModel;
 import test.project.vkapi.core.feeds.db.models.VideoAttachmentsModel;
+import test.project.vkapi.core.feeds.models.FeedAudioAttachment;
+import test.project.vkapi.core.feeds.models.FeedLinkAttachment;
+import test.project.vkapi.core.feeds.models.FeedPhotoAttachment;
+import test.project.vkapi.core.feeds.models.FeedVideoAttachment;
 
 public class AttachmentsRepository {
 
@@ -21,19 +25,27 @@ public class AttachmentsRepository {
         this.mapper = mapper;
     }
 
-    public void save(AudioAttachmentsModel model) {
-        dao.insert(model);
+    public void save(String feedId, FeedAudioAttachment model) {
+        AudioAttachmentsModel dbModel = mapper.map(model, AudioAttachmentsModel.class);
+        dbModel.setFeedId(feedId);
+        dao.insert(dbModel);
     }
 
-    public void save(VideoAttachmentsModel model) {
-        dao.insert(model);
+    public void save(String feedId, FeedVideoAttachment model) {
+        VideoAttachmentsModel dbModel = mapper.map(model, VideoAttachmentsModel.class);
+        dbModel.setFeedId(feedId);
+        dao.insert(dbModel);
     }
 
-    public void save(LinkAttachmentsModel model) {
-        dao.insert(model);
+    public void save(String feedId, FeedLinkAttachment model) {
+        LinkAttachmentsModel dbModel = mapper.map(model, LinkAttachmentsModel.class);
+        dbModel.setFeedId(feedId);
+        dao.insert(dbModel);
     }
 
-    public void save(PhotoAttachmentsModel model) {
-        dao.insert(model);
+    public void save(String feedId, FeedPhotoAttachment model) {
+        PhotoAttachmentsModel dbModel = mapper.map(model, PhotoAttachmentsModel.class);
+        dbModel.setFeedId(feedId);
+        dao.insert(dbModel);
     }
 }
