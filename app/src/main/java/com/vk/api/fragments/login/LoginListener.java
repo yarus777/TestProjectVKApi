@@ -1,5 +1,9 @@
 package com.vk.api.fragments.login;
 
 public interface LoginListener {
-    void onTokenRecieved(String token);
+    void onTokenReceived(String token);
+
+    void onNotAuthorized();
+
+    void onAuthorized();
 }

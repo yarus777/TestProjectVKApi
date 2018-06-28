@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.vk.api.AppInjector;
 import com.vk.api.activities.MainActivity;
+import com.vk.api.di.AppComponent;
 
 public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
 
@@ -32,6 +34,7 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        inject(((AppInjector)mMainActivity.getApplication()).getInjector());
         mViewModel = getViewModel();
         setHasOptionsMenu(false);
     }
@@ -43,12 +46,15 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
         return mRootView;
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
         mViewDataBinding.executePendingBindings();
     }
+
+    protected abstract void inject(AppComponent injector);
 
     public abstract int getBindingVariable();
 

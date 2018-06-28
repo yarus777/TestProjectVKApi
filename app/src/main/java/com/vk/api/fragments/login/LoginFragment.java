@@ -3,6 +3,7 @@ package com.vk.api.fragments.login;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.vk.api.R;
+import com.vk.api.di.AppComponent;
 import com.vk.api.fragments.BaseFragment;
 import com.vk.api.fragments.BaseViewModel;
 
@@ -19,6 +20,11 @@ public class LoginFragment extends BaseFragment {
         return fragment;
     }
 
+
+    @Override
+    protected void inject(AppComponent injector) {
+
+    }
 
     @Override
     public int getBindingVariable() {

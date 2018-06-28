@@ -42,7 +42,7 @@ public class LoginFragmentViewModel extends BaseViewModel {
                     return;
                 }
                 String token = parseUrlFragment(uri.replace(REDIRECT_URL, "").replace("#", "")).get("access_token");
-                loginListener.onTokenRecieved(token);
+                loginListener.onTokenReceived(token);
             }
         };
     }

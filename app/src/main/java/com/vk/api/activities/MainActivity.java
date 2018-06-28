@@ -51,7 +51,8 @@ public class MainActivity extends BaseActivity
         navigationView = binding.navView;
         navigationView.setNavigationItemSelectedListener(this);
 
-        showLoginFragment();
+        mainViewModel.setListener(this);
+        mainViewModel.init();
     }
 
     @Override
@@ -73,6 +74,7 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_about) {
             switchFragment(AboutFragment.newInstance(), AboutFragment.TAG);
         } else if (id == R.id.nav_exit) {
+            mainViewModel.logout();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -104,6 +106,12 @@ public class MainActivity extends BaseActivity
         }
     }
 
+    private void unlockDrawer() {
+        if (drawer != null) {
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+    }
+
     public void setToolbarVisibility(boolean isVisible) {
         if (toolbar != null) {
             if (isVisible) {
@@ -117,10 +125,20 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onTokenRecieved(String token) {
-        Intent intent = new Intent();
-        intent.putExtra(TOKEN, token);
-        setResult(RESULT_OK, intent);
-        finish();
+    public void onTokenReceived(String token) {
+        mainViewModel.login(token);
+        onAuthorized();
+    }
+
+    @Override
+    public void onNotAuthorized() {
+        showLoginFragment();
+    }
+
+    @Override
+    public void onAuthorized() {
+        unlockDrawer();
+        setToolbarVisibility(true);
+        switchFragment(FeedFragment.newInstance(), FeedFragment.TAG);
     }
 }
