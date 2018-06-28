@@ -18,6 +18,6 @@
     <string name="main_fragment_title">Main</string>
     <string name="oauth_fragment_title">Oauth</string>
 
-    <integer name="com_vk_sdk_AppId">6478702</integer>
+    <integer name="com_vk_sdk_AppId">6618894</integer>
 
 </resources>

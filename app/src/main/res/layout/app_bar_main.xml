@@ -5,7 +5,7 @@
 
         <variable
             name="barVm"
-            type="test.project.vkapi.activities.main.MainViewModel" />
+            type="com.vk.api.activities.MainActivityViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="test.project.vkapi.activities.main.MainActivity">
+        tools:context=".activities.MainActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -37,4 +37,3 @@
 
     </LinearLayout>
 </layout>
-
