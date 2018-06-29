@@ -6,6 +6,9 @@ import java.util.List;
 
 public class PhotoItem  {
 
+    @SerializedName("id")
+    private String id;
+
     @SerializedName("sizes")
     private List<SizesItem> sizes;
 
@@ -24,6 +27,13 @@ public class PhotoItem  {
         this.sizes = sizes;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }
 
 

@@ -5,6 +5,7 @@ import com.vk.api.R;
 import com.vk.api.di.AppComponent;
 import com.vk.api.fragments.BaseFragment;
 import com.vk.api.fragments.BaseViewModel;
+import com.vk.api.fragments.login.LoginListener;
 
 import javax.inject.Inject;
 
@@ -12,12 +13,18 @@ import javax.inject.Inject;
 public class FeedFragment extends BaseFragment {
     public static final String TAG = FeedFragment.class.getSimpleName();
 
+    private FeedItemClickListener listener;
+
     @Inject
     FeedFragmentViewModel viewModel;
 
     public static FeedFragment newInstance() {
         FeedFragment fragment = new FeedFragment();
         return fragment;
+    }
+
+    public void setListener(FeedItemClickListener listener) {
+        this.listener = listener;
     }
 
 
@@ -38,6 +45,7 @@ public class FeedFragment extends BaseFragment {
 
     @Override
     public BaseViewModel getViewModel() {
+        viewModel.setListener(listener);
         return viewModel;
     }
 }

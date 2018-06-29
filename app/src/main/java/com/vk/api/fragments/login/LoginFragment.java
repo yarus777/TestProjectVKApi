@@ -3,6 +3,7 @@ package com.vk.api.fragments.login;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.vk.api.R;
+import com.vk.api.activities.MainActivity;
 import com.vk.api.di.AppComponent;
 import com.vk.api.fragments.BaseFragment;
 import com.vk.api.fragments.BaseViewModel;
@@ -11,13 +12,16 @@ import com.vk.api.fragments.BaseViewModel;
 public class LoginFragment extends BaseFragment {
     public static final String TAG = LoginFragment.class.getSimpleName();
 
-    private static LoginListener loginListener;
+    private LoginListener listener;
 
 
-    public static LoginFragment newInstance(LoginListener listener) {
+    public static LoginFragment newInstance() {
         LoginFragment fragment = new LoginFragment();
-        loginListener = listener;
         return fragment;
+    }
+
+    public void setListener(LoginListener listener) {
+        this.listener = listener;
     }
 
 
@@ -38,6 +42,6 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     public BaseViewModel getViewModel() {
-        return new LoginFragmentViewModel(loginListener);
+        return new LoginFragmentViewModel(listener);
     }
 }

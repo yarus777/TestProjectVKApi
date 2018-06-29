@@ -14,7 +14,8 @@ public class FeedPhotoAttachment {
 
     }
 
-    public FeedPhotoAttachment(String url, int width, int height) {
+    public FeedPhotoAttachment(String id, String url, int width, int height) {
+        this.id = id;
         this.url = url;
         this.width = width;
         this.height = height;

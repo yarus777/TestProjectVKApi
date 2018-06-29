@@ -21,7 +21,7 @@ public class FeedDBModel {
     private int commentsCount;
 
     @ColumnInfo(name = "post_id")
-    private String postId;
+    private String post;
 
     public int getId() {
         return id;
@@ -55,11 +55,11 @@ public class FeedDBModel {
         this.commentsCount = commentsCount;
     }
 
-    public String getPostId() {
-        return postId;
+    public String getPost() {
+        return post;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setPost(String post) {
+        this.post = post;
     }
 }

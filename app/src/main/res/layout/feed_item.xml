@@ -59,8 +59,8 @@
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
                 android:scaleType="fitCenter"
-                app:attachmentUrl="@{feedItem.attachmentImg}"
-                android:visibility="@{feedItem.photoAttachmentVisibility}"/>
+                android:visibility="@{feedItem.photoAttachmentVisibility}"
+                app:attachmentUrl="@{feedItem.attachmentImg}" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/photo_recycler"
@@ -70,10 +70,10 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:orientation="vertical"
-                app:photoAdapter="@{feedItem.photoAdapter}"
+                android:visibility="@{feedItem.photoAttachmentsRecyclerVisibility}"
                 app:layoutManager="android.support.v7.widget.GridLayoutManager"
-                app:spanCount="3"
-                android:visibility="@{feedItem.photoAttachmentsRecyclerVisibility}"/>
+                app:photoAdapter="@{feedItem.photoAdapter}"
+                app:spanCount="3" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/link_recycler"
@@ -83,9 +83,9 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:orientation="vertical"
-                app:linkAdapter="@{feedItem.linkAdapter}"
+                android:visibility="@{feedItem.getLinkAttachmentsRecyclerVisibility}"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                android:visibility="@{feedItem.getLinkAttachmentsRecyclerVisibility}"/>
+                app:linkAdapter="@{feedItem.linkAdapter}" />
 
 
             <android.support.v7.widget.RecyclerView
@@ -96,9 +96,9 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:orientation="vertical"
+                android:visibility="@{feedItem.getAudioAttachmentsRecyclerVisibility}"
                 app:audioAdapter="@{feedItem.audioAdapter}"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                android:visibility="@{feedItem.getAudioAttachmentsRecyclerVisibility}"/>
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

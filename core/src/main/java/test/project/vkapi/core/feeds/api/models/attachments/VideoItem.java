@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class VideoItem {
 
+    @SerializedName("id")
+    private int id;
+
     @SerializedName("title")
     private String title;
 
@@ -50,4 +53,11 @@ public class VideoItem {
     }
 
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

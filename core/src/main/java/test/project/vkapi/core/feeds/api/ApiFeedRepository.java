@@ -96,7 +96,7 @@ public class ApiFeedRepository implements FeedRepository {
                             List<PhotoItem> photoItems = feedItem.getPhotoAttachments();
                             for (PhotoItem photoItem : photoItems) {
                                 SizesItem sizesItem = photoItem.chooseBiggestPhotoItem();
-                                photoList.add(new FeedPhotoAttachment(sizesItem.getUrl(), sizesItem.getWidth(), sizesItem.getHeight()));
+                                photoList.add(new FeedPhotoAttachment(photoItem.getId(), sizesItem.getUrl(), sizesItem.getWidth(), sizesItem.getHeight()));
                             }
                             feed = mapper.map(feedItem, Feed.class);
                             feed.setAudioAttachmentList(audioList);
@@ -116,7 +116,7 @@ public class ApiFeedRepository implements FeedRepository {
                     }
                 })
                 .toObservable()
-                //.mergeWith(dbRepository.getFeed())
+                .mergeWith(dbRepository.getFeed())
                 .distinct();
     }
 }

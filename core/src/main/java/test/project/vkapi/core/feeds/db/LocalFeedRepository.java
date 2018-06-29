@@ -72,9 +72,17 @@ public class LocalFeedRepository implements FeedRepository, FeedStorage {
                                     feed.setAudioAttachmentList(audio);
                                 }
                             });
+                    attachmentsRepository
+                            .getVideoByFeedId(feed.getId())
+                            .subscribe(new Consumer<List<FeedVideoAttachment>>() {
+                                @Override
+                                public void accept(List<FeedVideoAttachment> video) throws Exception {
+                                    feed.setVideoAttachmentList(video);
+                                }
+                            });
 
                     postSourceRepository
-                            .getById(dbModel.getPostId())
+                            .getById(dbModel.getPost())
                             .subscribe(new Consumer<PostSource>() {
                                 @Override
                                 public void accept(PostSource postInfoSource) throws Exception {
@@ -95,7 +103,7 @@ public class LocalFeedRepository implements FeedRepository, FeedStorage {
         for (Feed feed : feeds) {
             feedDBModel = mapper.map(feed, FeedDBModel.class);
             postSourceRepository.save(feed.getSource());
-            feedDBModel.setPostId(feed.getSource().getId());
+            feedDBModel.setPost(feed.getSource().getId());
             dao.insert(feedDBModel);
 
             for (FeedLinkAttachment attachment : feed.getLinkAttachmentList()) {

@@ -1,13 +1,14 @@
 package com.vk.api.activities;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -16,13 +17,17 @@ import com.vk.api.databinding.ActivityMainBinding;
 import com.vk.api.fragments.about.AboutFragment;
 import com.vk.api.fragments.BaseFragment;
 import com.vk.api.fragments.feed.FeedFragment;
+import com.vk.api.fragments.feed.FeedItemClickListener;
+import com.vk.api.fragments.feed.item.FeedItemFragment;
 import com.vk.api.fragments.login.LoginFragment;
 import com.vk.api.fragments.login.LoginListener;
 
 import javax.inject.Inject;
 
+import test.project.vkapi.core.feeds.models.Feed;
+
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LoginListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LoginListener, FeedItemClickListener {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -70,9 +75,9 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_news) {
-            switchFragment(FeedFragment.newInstance(), FeedFragment.TAG);
+            onAuthorized();
         } else if (id == R.id.nav_about) {
-            switchFragment(AboutFragment.newInstance(), AboutFragment.TAG);
+            switchFragment(AboutFragment.newInstance(), AboutFragment.TAG, false);
         } else if (id == R.id.nav_exit) {
             mainViewModel.logout();
         }
@@ -86,10 +91,8 @@ public class MainActivity extends BaseActivity
         toggle.syncState();
     }
 
-    private void switchFragment(BaseFragment fragment, String tag) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .disallowAddToBackStack()
+    private void switchFragment(BaseFragment fragment, String tag, boolean addToStack) {
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_fragment_layout, fragment, tag)
                 .commit();
     }
@@ -97,7 +100,9 @@ public class MainActivity extends BaseActivity
     private void showLoginFragment() {
         lockDrawer();
         setToolbarVisibility(false);
-        switchFragment(LoginFragment.newInstance(this), LoginFragment.TAG);
+        LoginFragment fragment = LoginFragment.newInstance();
+        fragment.setListener(this);
+        switchFragment(fragment, LoginFragment.TAG, false);
     }
 
     private void lockDrawer() {
@@ -139,6 +144,16 @@ public class MainActivity extends BaseActivity
     public void onAuthorized() {
         unlockDrawer();
         setToolbarVisibility(true);
-        switchFragment(FeedFragment.newInstance(), FeedFragment.TAG);
+        FeedFragment fragment = FeedFragment.newInstance();
+        fragment.setListener(this);
+        switchFragment(fragment, FeedFragment.TAG, false);
+    }
+
+    @Override
+    public void onItemClick(Feed item) {
+        Log.d("Click", "" + item.getText());
+        FeedItemFragment fragment = FeedItemFragment.newInstance();
+        fragment.setFeedItem(item);
+        switchFragment(fragment, FeedItemFragment.TAG, true);
     }
 }

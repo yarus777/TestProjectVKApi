@@ -11,7 +11,7 @@ import android.arch.persistence.room.PrimaryKey;
         indices = {@Index(value = {"feed_id"})})
 public class VideoAttachmentsModel {
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey//(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
 

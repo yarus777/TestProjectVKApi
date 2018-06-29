@@ -1,5 +1,7 @@
 package test.project.vkapi.core.feeds.db;
 
+import android.databinding.ObservableField;
+
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
@@ -93,8 +95,23 @@ public class AttachmentsRepository {
                 .toList();
     }
 
-    public Single<List<VideoAttachmentsModel>> getVideoByFeedId(String id) {
-        return dao.getVideoAttachmentByFeedId(id);
+    public Single<List<FeedVideoAttachment>> getVideoByFeedId(String id) {
+        return dao.getVideoAttachmentByFeedId(id)
+                .toObservable()
+                .flatMap(new Function<List<VideoAttachmentsModel>, Observable<VideoAttachmentsModel>>() {
+
+                    @Override
+                    public Observable<VideoAttachmentsModel> apply(List<VideoAttachmentsModel> list) throws Exception {
+                        return Observable.fromIterable(list);
+                    }
+                })
+                .map(new Function<VideoAttachmentsModel, FeedVideoAttachment>() {
+                    @Override
+                    public FeedVideoAttachment apply(VideoAttachmentsModel model) throws Exception {
+                        return mapper.map(model, FeedVideoAttachment.class);
+                    }
+                })
+                .toList();
     }
 
     public Single<List<FeedAudioAttachment>> getAudioByFeedId(String id) {

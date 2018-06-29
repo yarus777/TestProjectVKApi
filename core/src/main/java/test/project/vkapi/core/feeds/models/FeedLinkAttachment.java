@@ -2,7 +2,7 @@ package test.project.vkapi.core.feeds.models;
 
 public class FeedLinkAttachment {
 
-    private String id;
+    //private String id;
 
     private String url;
 
@@ -38,11 +38,11 @@ public class FeedLinkAttachment {
         this.description = description;
     }
 
-    public String getId() {
+    /*public String getId() {
         return id;
     }
 
     public void setId(String id) {
         this.id = id;
-    }
+    }*/
 }

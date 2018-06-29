@@ -4,6 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class AudioItem {
 
+    @SerializedName("id")
+    private int id;
+
     @SerializedName("artist")
     private String artist;
 
@@ -48,4 +51,11 @@ public class AudioItem {
         this.url = url;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

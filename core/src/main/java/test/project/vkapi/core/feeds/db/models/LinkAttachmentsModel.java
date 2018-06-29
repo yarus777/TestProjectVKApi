@@ -6,15 +6,19 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 @Entity(tableName = "links", foreignKeys = {@ForeignKey(entity = FeedDBModel.class, parentColumns = "id", childColumns = "feed_id")},
         indices = {@Index(value = {"feed_id"})})
 public class LinkAttachmentsModel {
 
-    @PrimaryKey(autoGenerate = true)
+    /*@PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private int id;
+    private int id;*/
 
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "url")
     private String url;
 
     private String title;
@@ -24,13 +28,13 @@ public class LinkAttachmentsModel {
     @ColumnInfo(name = "feed_id")
     private String feedId;
 
-    public int getId() {
+    /*public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
+    }*/
 
     public String getUrl() {
         return url;

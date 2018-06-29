@@ -1,6 +1,5 @@
 package com.vk.api.views.feed;
 
-import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.support.v7.widget.RecyclerView;
@@ -12,11 +11,12 @@ import com.bumptech.glide.request.RequestOptions;
 import com.vk.api.adapters.AudioAdapter;
 import com.vk.api.adapters.LinkAdapter;
 import com.vk.api.adapters.PhotoAdapter;
+import com.vk.api.fragments.BaseViewModel;
 
 import test.project.vkapi.core.feeds.models.Feed;
 
 
-public class FeedItemViewModel extends BaseObservable {
+public class FeedItemViewModel extends BaseViewModel {
     private final Feed item;
     private final PhotoAdapter photoAdapter;
     private final AudioAdapter audioAdapter;

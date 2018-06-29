@@ -16,7 +16,6 @@ import javax.inject.Named;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import test.project.vkapi.core.feeds.FeedRepository;
 import test.project.vkapi.core.feeds.models.Feed;
 
@@ -33,6 +32,10 @@ public class FeedFragmentViewModel extends BaseViewModel {
         loadFeeds();
     }
 
+    public void setListener(FeedItemClickListener listener){
+        adapter.setListener(listener);
+    }
+
     private void loadFeeds() {
         feedRepository.getFeed()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -47,7 +50,7 @@ public class FeedFragmentViewModel extends BaseViewModel {
                         new Consumer<Throwable>() {
                             @Override
                             public void accept(Throwable throwable) throws Exception {
-                                 Log.d("MainViewModel", throwable.getMessage());
+                                Log.d("MainViewModel", throwable.getMessage());
                             }
                         });
 
