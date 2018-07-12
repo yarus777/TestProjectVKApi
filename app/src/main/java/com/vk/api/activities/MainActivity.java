@@ -3,6 +3,7 @@ package com.vk.api.activities;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -27,7 +28,7 @@ import javax.inject.Inject;
 import test.project.vkapi.core.feeds.models.Feed;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LoginListener, FeedItemClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, LoginListener {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
@@ -149,11 +150,15 @@ public class MainActivity extends BaseActivity
         switchFragment(fragment, FeedFragment.TAG, false);
     }
 
-    @Override
-    public void onItemClick(Feed item) {
+    public void goTo(Fragment f) {
+        // go to passed fragment
         Log.d("Click", "" + item.getText());
         FeedItemFragment fragment = FeedItemFragment.newInstance();
         fragment.setFeedItem(item);
         switchFragment(fragment, FeedItemFragment.TAG, true);
+    }
+
+    public void goBack() {
+
     }
 }

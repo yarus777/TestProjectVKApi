@@ -1,28 +1,21 @@
 package com.vk.api.fragments;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.vk.api.AppInjector;
 import com.vk.api.activities.MainActivity;
-import com.vk.api.di.AppComponent;
 
-public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseViewModel> extends Fragment {
+public abstract class BaseFragment<V extends BaseViewModel> extends Fragment {
 
     protected MainActivity mMainActivity;
 
-    private View mRootView;
-    private T mViewDataBinding;
     private V mViewModel;
+
+    protected BaseFragment(V viewModel) {
+        mViewModel = viewModel;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -34,34 +27,15 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        inject(((AppInjector)mMainActivity.getApplication()).getInjector());
-        mViewModel = getViewModel();
         setHasOptionsMenu(false);
     }
 
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        mRootView = mViewDataBinding.getRoot();
-        return mRootView;
+    protected V getViewModel() {
+        return mViewModel;
     }
 
-
-    @Override
-    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        mViewDataBinding.setVariable(getBindingVariable(), mViewModel);
-        mViewDataBinding.executePendingBindings();
+    public MainActivity getNavigator() {
+        return mMainActivity;
     }
-
-    protected abstract void inject(AppComponent injector);
-
-    public abstract int getBindingVariable();
-
-    public abstract
-    @LayoutRes
-    int getLayoutId();
-
-    public abstract V getViewModel();
 
 }

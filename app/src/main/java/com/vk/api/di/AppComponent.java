@@ -1,5 +1,6 @@
 package com.vk.api.di;
 
+import com.vk.api.MainApplication;
 import com.vk.api.activities.MainActivity;
 import com.vk.api.di.modules.AppModule;
 import com.vk.api.di.modules.DataModule;
@@ -25,4 +26,6 @@ import test.project.vkapi.core.user.UserModule;
 public interface AppComponent {
     void inject(MainActivity mainActivity);
     void inject(FeedFragment fragment);
+
+    void inject(MainApplication mainApplication);
 }
