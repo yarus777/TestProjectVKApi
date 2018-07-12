@@ -116,7 +116,7 @@ public class ApiFeedRepository implements FeedRepository {
                     }
                 })
                 .toObservable()
-                .mergeWith(dbRepository.getFeed())
+                //.mergeWith(dbRepository.getFeed())
                 .distinct();
     }
 }

@@ -37,16 +37,16 @@ public interface AttachmentsDAO {
     @Query("SELECT * FROM photos WHERE feed_id = :id")
     Single<List<PhotoAttachmentsModel>> getPhotoAttachmentByFeedId(String id);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(AudioAttachmentsModel model);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(VideoAttachmentsModel model);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(LinkAttachmentsModel model);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(PhotoAttachmentsModel model);
 
 }
