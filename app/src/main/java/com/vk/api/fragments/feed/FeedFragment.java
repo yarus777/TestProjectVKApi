@@ -9,12 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.vk.api.R;
 import com.vk.api.activities.MainActivity;
 import com.vk.api.adapters.FeedAdapter;
-import com.vk.api.databinding.FeedItemBinding;
 import com.vk.api.fragments.BaseFragment;
 import com.vk.api.fragments.feed.item.FeedItemFragment;
 import com.vk.api.views.feed.FeedItemViewModel;
@@ -56,18 +58,28 @@ public class FeedFragment extends BaseFragment<FeedFragmentViewModel> {
         });
     }
 
-    public static class FeedHolder extends RecyclerView.ViewHolder  {
+    public static class FeedHolder extends RecyclerView.ViewHolder {
         private Feed item;
 
         private TextView description;
+        private TextView postSourceText;
+        private ImageView postSourceImg;
+        private ImageView photoAttachmentImg;
+        private TextView commentsCount;
+        private TextView likesCount;
 
         public FeedHolder(View view, final MainActivity navigator) {
             super(view);
             description = view.findViewById(R.id.post_text);
+            postSourceText = view.findViewById(R.id.post_user_text);
+            postSourceImg = view.findViewById(R.id.post_user_img);
+            photoAttachmentImg = view.findViewById(R.id.photo_img);
+            commentsCount = view.findViewById(R.id.comments_count);
+            likesCount = view.findViewById(R.id.likes_count);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(item != null) {
+                    if (item != null) {
                         navigator.goTo(new FeedItemFragment(new FeedItemViewModel(item)));
                     }
                 }
@@ -77,6 +89,23 @@ public class FeedFragment extends BaseFragment<FeedFragmentViewModel> {
         public void bind(final Feed item) {
             this.item = item;
             description.setText(item.getText());
+            postSourceText.setText(item.getSource().getUserName());
+            Glide.with(postSourceImg.getContext())
+                    .load(item.getSource().getImgUrl())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(postSourceImg);
+
+            photoAttachmentImg.setVisibility(getPhotoAttachmentVisibility() ? View.VISIBLE : View.GONE);
+            Glide.with(photoAttachmentImg.getContext())
+                    .load(getPhotoAttachmentVisibility() ? item.getPhotoAttachmentList().get(0).getUrl() : "")
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(photoAttachmentImg);
+            commentsCount.setText("" + item.getCommentsCount());
+            likesCount.setText("" + item.getLikesCount());
+        }
+
+        private boolean getPhotoAttachmentVisibility() {
+            return item.getPhotoAttachmentList().size() > 0;
         }
     }
 }

@@ -1,127 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="5dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/post_user_info"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/post_user_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:url="@{feedItem.postUserImg}" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="5dp"
-                    android:text="@{feedItem.postUserText}" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/post_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/post_user_info"
-                android:layout_margin="5dp"
-                android:autoLink="all"
-                android:text="@{feedItem.text}" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/photo_img"
+                android:id="@+id/post_user_img"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:id="@+id/post_user_text"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="5dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/post_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_user_info"
+            android:layout_margin="5dp"
+            android:autoLink="all" />
+
+        <ImageView
+            android:id="@+id/photo_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_text"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:adjustViewBounds="true"
+            android:cropToPadding="true"
+            android:scaleType="fitCenter" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/photo_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/photo_img"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="3" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/link_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/photo_recycler"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/audio_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/link_recycler"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:orientation="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/audio_recycler"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/baseline_favorite_black_48" />
+
+            <TextView
+                android:id="@+id/likes_count"
+                android:layout_width="35dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/post_text"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:adjustViewBounds="true"
-                android:cropToPadding="true"
-                android:scaleType="fitCenter"
-                android:visibility="@{feedItem.photoAttachmentVisibility}"
-                app:attachmentUrl="@{feedItem.attachmentImg}" />
+                android:layout_margin="5dp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/photo_recycler"
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/baseline_chat_bubble_black_48" />
+
+            <TextView
+                android:id="@+id/comments_count"
+                android:layout_width="35dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/photo_img"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical"
-                android:visibility="@{feedItem.photoAttachmentsRecyclerVisibility}"
-                app:layoutManager="android.support.v7.widget.GridLayoutManager"
-                app:photoAdapter="@{feedItem.photoAdapter}"
-                app:spanCount="3" />
+                android:layout_margin="5dp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/link_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/photo_recycler"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical"
-                android:visibility="@{feedItem.getLinkAttachmentsRecyclerVisibility}"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                app:linkAdapter="@{feedItem.linkAdapter}" />
+        </LinearLayout>
 
+    </RelativeLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/audio_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/link_recycler"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:orientation="vertical"
-                android:visibility="@{feedItem.getAudioAttachmentsRecyclerVisibility}"
-                app:audioAdapter="@{feedItem.audioAdapter}"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/audio_recycler"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="5dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/baseline_favorite_black_48" />
-
-                <TextView
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@{String.valueOf(feedItem.likesCount)}" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/baseline_chat_bubble_black_48" />
-
-                <TextView
-                    android:layout_width="35dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:text="@{String.valueOf(feedItem.commentsCount)}" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
+</android.support.v7.widget.CardView>

@@ -1,11 +1,9 @@
 package com.vk.api.fragments.login;
 
-import android.content.Intent;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -22,7 +20,11 @@ public class LoginFragmentViewModel extends BaseViewModel {
 
     private LoginListener loginListener;
 
-    LoginFragmentViewModel(LoginListener loginListener) {
+    public LoginFragmentViewModel(){
+
+    }
+
+    public LoginFragmentViewModel(LoginListener loginListener) {
         this.loginListener = loginListener;
     }
 

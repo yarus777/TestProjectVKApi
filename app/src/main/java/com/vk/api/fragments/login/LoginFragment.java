@@ -1,47 +1,14 @@
 package com.vk.api.fragments.login;
 
 
-import com.android.databinding.library.baseAdapters.BR;
-import com.vk.api.R;
-import com.vk.api.activities.MainActivity;
-import com.vk.api.di.AppComponent;
 import com.vk.api.fragments.BaseFragment;
-import com.vk.api.fragments.BaseViewModel;
 
 
-public class LoginFragment extends BaseFragment {
+public class LoginFragment extends BaseFragment<LoginFragmentViewModel> {
     public static final String TAG = LoginFragment.class.getSimpleName();
 
-    private LoginListener listener;
-
-
-    public static LoginFragment newInstance() {
-        LoginFragment fragment = new LoginFragment();
-        return fragment;
+    public LoginFragment() {
+        super(new LoginFragmentViewModel());
     }
 
-    public void setListener(LoginListener listener) {
-        this.listener = listener;
-    }
-
-
-    @Override
-    protected void inject(AppComponent injector) {
-
-    }
-
-    @Override
-    public int getBindingVariable() {
-        return BR.loginViewModel;
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.login_fragment;
-    }
-
-    @Override
-    public BaseViewModel getViewModel() {
-        return new LoginFragmentViewModel(listener);
-    }
 }

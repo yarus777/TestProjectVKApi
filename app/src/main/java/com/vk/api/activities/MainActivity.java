@@ -78,7 +78,7 @@ public class MainActivity extends BaseActivity
         if (id == R.id.nav_news) {
             onAuthorized();
         } else if (id == R.id.nav_about) {
-            switchFragment(AboutFragment.newInstance(), AboutFragment.TAG, false);
+            goTo(new AboutFragment());
         } else if (id == R.id.nav_exit) {
             mainViewModel.logout();
         }
@@ -101,9 +101,8 @@ public class MainActivity extends BaseActivity
     private void showLoginFragment() {
         lockDrawer();
         setToolbarVisibility(false);
-        LoginFragment fragment = LoginFragment.newInstance();
-        fragment.setListener(this);
-        switchFragment(fragment, LoginFragment.TAG, false);
+        goTo(new LoginFragment());
+        //fragment.setListener(this);
     }
 
     private void lockDrawer() {
@@ -145,17 +144,13 @@ public class MainActivity extends BaseActivity
     public void onAuthorized() {
         unlockDrawer();
         setToolbarVisibility(true);
-        FeedFragment fragment = FeedFragment.newInstance();
-        fragment.setListener(this);
-        switchFragment(fragment, FeedFragment.TAG, false);
+        goTo(new FeedFragment());
+        //fragment.setListener(this);
     }
 
-    public void goTo(Fragment f) {
+    public void goTo(BaseFragment f) {
         // go to passed fragment
-        Log.d("Click", "" + item.getText());
-        FeedItemFragment fragment = FeedItemFragment.newInstance();
-        fragment.setFeedItem(item);
-        switchFragment(fragment, FeedItemFragment.TAG, true);
+        switchFragment(f, "", true);
     }
 
     public void goBack() {
