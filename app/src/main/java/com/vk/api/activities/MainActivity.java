@@ -1,48 +1,49 @@
 package com.vk.api.activities;
 
+import android.arch.lifecycle.Observer;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.vk.api.R;
 import com.vk.api.databinding.ActivityMainBinding;
-import com.vk.api.fragments.about.AboutFragment;
 import com.vk.api.fragments.BaseFragment;
+import com.vk.api.fragments.about.AboutFragment;
 import com.vk.api.fragments.feed.FeedFragment;
-import com.vk.api.fragments.feed.FeedItemClickListener;
-import com.vk.api.fragments.feed.item.FeedItemFragment;
 import com.vk.api.fragments.login.LoginFragment;
-import com.vk.api.fragments.login.LoginListener;
+import com.vk.api.navigation.BackStack;
 
 import javax.inject.Inject;
 
-import test.project.vkapi.core.feeds.models.Feed;
-
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, LoginListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private NavigationView navigationView;
     private Toolbar toolbar;
     private ActionBarDrawerToggle toggle;
 
+    private BackStack backStack;
+
     @Inject
     MainActivityViewModel mainViewModel;
-
-    public static final String TOKEN = "access_token";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        backStack = new BackStack();
         getAppComponent().inject(this);
 
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -57,8 +58,23 @@ public class MainActivity extends BaseActivity
         navigationView = binding.navView;
         navigationView.setNavigationItemSelectedListener(this);
 
-        mainViewModel.setListener(this);
-        mainViewModel.init();
+        final ImageView imageView = findViewById(R.id.userpic);
+        final TextView userNameView = findViewById(R.id.username);
+
+        mainViewModel.getImageUrl().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String url) {
+                loadImage(imageView, url);
+            }
+        });
+
+        mainViewModel.getUserName().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String username) {
+                userNameView.setText(username);
+            }
+        });
+
     }
 
     @Override
@@ -74,9 +90,8 @@ public class MainActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         if (id == R.id.nav_news) {
-            onAuthorized();
+            goTo(new FeedFragment());
         } else if (id == R.id.nav_about) {
             goTo(new AboutFragment());
         } else if (id == R.id.nav_exit) {
@@ -105,6 +120,13 @@ public class MainActivity extends BaseActivity
         //fragment.setListener(this);
     }
 
+    private void loadImage(ImageView view, String imageUrl) {
+        Glide.with(view.getContext())
+                .load(imageUrl)
+                .apply(RequestOptions.circleCropTransform())
+                .into(view);
+    }
+
     private void lockDrawer() {
         if (drawer != null) {
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -126,34 +148,15 @@ public class MainActivity extends BaseActivity
                 toolbar.setVisibility(View.GONE);
             }
         }
-
-    }
-
-    @Override
-    public void onTokenReceived(String token) {
-        mainViewModel.login(token);
-        onAuthorized();
-    }
-
-    @Override
-    public void onNotAuthorized() {
-        showLoginFragment();
-    }
-
-    @Override
-    public void onAuthorized() {
-        unlockDrawer();
-        setToolbarVisibility(true);
-        goTo(new FeedFragment());
-        //fragment.setListener(this);
     }
 
     public void goTo(BaseFragment f) {
         // go to passed fragment
         switchFragment(f, "", true);
+        backStack.add(f);
     }
 
     public void goBack() {
-
+        backStack.pop();
     }
 }

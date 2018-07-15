@@ -1,6 +1,5 @@
 package com.vk.api.fragments.feed;
 
-import android.annotation.SuppressLint;
 import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,10 +18,13 @@ import com.vk.api.activities.MainActivity;
 import com.vk.api.adapters.FeedAdapter;
 import com.vk.api.fragments.BaseFragment;
 import com.vk.api.fragments.feed.item.FeedItemFragment;
+import com.vk.api.fragments.login.LoginFragment;
 import com.vk.api.views.feed.FeedItemViewModel;
 
 import java.util.List;
 
+import test.project.vkapi.core.data.AppData;
+import test.project.vkapi.core.data.modules.LoginModule;
 import test.project.vkapi.core.feeds.models.Feed;
 
 
@@ -45,6 +47,11 @@ public class FeedFragment extends BaseFragment<FeedFragmentViewModel> {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if(!AppData.auth().isLoggedIn()) {
+            getNavigator().goTo(new LoginFragment());
+            return;
+        }
 
         feedListView = view.findViewById(R.id.feed_recycler);
         adapter = new FeedAdapter(getNavigator());
