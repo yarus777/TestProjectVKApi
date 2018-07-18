@@ -7,6 +7,7 @@ import com.vk.api.fragments.BaseViewModel;
 
 import java.util.List;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import test.project.vkapi.core.data.AppData;
 import test.project.vkapi.core.feeds.models.Feed;
@@ -16,7 +17,9 @@ public class FeedFragmentViewModel extends BaseViewModel {
     private MutableLiveData<List<Feed>> feeds = new MutableLiveData<>();
 
     public FeedFragmentViewModel() {
-        AppData.feed().getFeeds().subscribe(
+        AppData.feed().getFeeds().
+                observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
                 new Consumer<List<Feed>>() {
                     @Override
                     public void accept(List<Feed> feedsResponse) throws Exception {

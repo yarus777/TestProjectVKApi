@@ -1,7 +1,6 @@
 package com.vk.api.fragments.login;
 
 
-import android.databinding.Bindable;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,7 +48,7 @@ public class LoginFragment extends BaseFragment<LoginFragmentViewModel> {
                 }
                 String token = parseUrlFragment(uri.replace(REDIRECT_URL, "").replace("#", "")).get("access_token");
                 AppData.auth().login(token);
-                getNavigator().goTo(new FeedFragment());
+                getNavigator().goTo(new FeedFragment(), true);
             }
         };
         webView.getSettings().setDomStorageEnabled(true);

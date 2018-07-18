@@ -1,10 +1,10 @@
 package com.vk.api.activities;
 
 import android.arch.lifecycle.Observer;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.vk.api.R;
-import com.vk.api.databinding.ActivityMainBinding;
 import com.vk.api.fragments.BaseFragment;
 import com.vk.api.fragments.about.AboutFragment;
 import com.vk.api.fragments.feed.FeedFragment;
@@ -36,32 +35,31 @@ public class MainActivity extends BaseActivity
 
     private BackStack backStack;
 
-    @Inject
-    MainActivityViewModel mainViewModel;
+    //@Inject
+    //MainActivityViewModel mainViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
         backStack = new BackStack();
         getAppComponent().inject(this);
 
-        ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setViewmodel(mainViewModel);
-
-        toolbar = binding.appBarMain.toolbar;
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer = binding.drawerLayout;
+        drawer = findViewById(R.id.drawer_layout);
         setUpDrawer();
 
-        navigationView = binding.navView;
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
 
         final ImageView imageView = findViewById(R.id.userpic);
         final TextView userNameView = findViewById(R.id.username);
 
-        mainViewModel.getImageUrl().observe(this, new Observer<String>() {
+        /*mainViewModel.getImageUrl().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String url) {
                 loadImage(imageView, url);
@@ -73,7 +71,8 @@ public class MainActivity extends BaseActivity
             public void onChanged(@Nullable String username) {
                 userNameView.setText(username);
             }
-        });
+        });*/
+        goTo(new LoginFragment(), false);
 
     }
 
@@ -91,11 +90,11 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_news) {
-            goTo(new FeedFragment());
+            goTo(new FeedFragment(), true);
         } else if (id == R.id.nav_about) {
-            goTo(new AboutFragment());
+            goTo(new AboutFragment(), true);
         } else if (id == R.id.nav_exit) {
-            mainViewModel.logout();
+            //mainViewModel.logout();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -105,19 +104,15 @@ public class MainActivity extends BaseActivity
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+
     }
 
-    private void switchFragment(BaseFragment fragment, String tag, boolean addToStack) {
-        getSupportFragmentManager().beginTransaction()
+    private void switchFragment(BaseFragment fragment, String tag) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
                 .replace(R.id.frame_fragment_layout, fragment, tag)
                 .commit();
-    }
-
-    private void showLoginFragment() {
-        lockDrawer();
-        setToolbarVisibility(false);
-        goTo(new LoginFragment());
-        //fragment.setListener(this);
     }
 
     private void loadImage(ImageView view, String imageUrl) {
@@ -125,18 +120,6 @@ public class MainActivity extends BaseActivity
                 .load(imageUrl)
                 .apply(RequestOptions.circleCropTransform())
                 .into(view);
-    }
-
-    private void lockDrawer() {
-        if (drawer != null) {
-            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }
-    }
-
-    private void unlockDrawer() {
-        if (drawer != null) {
-            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        }
     }
 
     public void setToolbarVisibility(boolean isVisible) {
@@ -150,9 +133,20 @@ public class MainActivity extends BaseActivity
         }
     }
 
-    public void goTo(BaseFragment f) {
-        // go to passed fragment
-        switchFragment(f, "", true);
+    public void setDrawerLocked(boolean isLocked) {
+        if (drawer != null){
+            if (isLocked) {
+                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            } else {
+                drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            }
+        }
+    }
+
+    public void goTo(BaseFragment f, boolean isVisible) {
+        setDrawerLocked(isVisible);
+        setToolbarVisibility(isVisible);
+        switchFragment(f, "");
         backStack.add(f);
     }
 

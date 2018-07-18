@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.android.databinding.library.baseAdapters.BR;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.vk.api.fragments.BaseViewModel;
 
 import javax.inject.Inject;
 
@@ -23,11 +24,12 @@ import test.project.vkapi.core.user.UserManager;
 import test.project.vkapi.core.user.UserRepository;
 import test.project.vkapi.core.user.models.User;
 
-public class MainActivityViewModel extends BaseObservable {
+public class MainActivityViewModel extends BaseViewModel {
 
 
     private MutableLiveData<String> userName;
     private MutableLiveData<String> userpicUrl;
+
 
     MainActivityViewModel() {
         AppData.auth().user().subscribe(
@@ -54,9 +56,6 @@ public class MainActivityViewModel extends BaseObservable {
     private void login(String token) {
         AppData.auth().login(token);
     }
-
-    @BindingAdapter({"loadAvatar"})
-
 
     public LiveData<String> getImageUrl() {
         return userpicUrl;

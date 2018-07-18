@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import test.project.vkapi.core.data.AppData;
 import test.project.vkapi.core.data.modules.FeedModule;
+import test.project.vkapi.core.data.modules.LoginModule;
 
 public class MainApplication extends MultiDexApplication implements AppInjector {
 
@@ -19,6 +20,8 @@ public class MainApplication extends MultiDexApplication implements AppInjector 
 
     @Inject
     FeedModule feedModule;
+    @Inject
+    LoginModule loginModule;
 
     @Override
     public void onCreate() {
@@ -30,7 +33,7 @@ public class MainApplication extends MultiDexApplication implements AppInjector 
                 .dataModule(new DataModule(this))
                 .build();
         appComponent.inject(this);
-        AppData.init(feedModule);
+        AppData.init(feedModule, loginModule);
     }
 
 

@@ -49,7 +49,7 @@ public class FeedFragment extends BaseFragment<FeedFragmentViewModel> {
         super.onViewCreated(view, savedInstanceState);
 
         if(!AppData.auth().isLoggedIn()) {
-            getNavigator().goTo(new LoginFragment());
+            getNavigator().goTo(new LoginFragment(), false);
             return;
         }
 
@@ -87,7 +87,7 @@ public class FeedFragment extends BaseFragment<FeedFragmentViewModel> {
                 @Override
                 public void onClick(View view) {
                     if (item != null) {
-                        navigator.goTo(new FeedItemFragment(new FeedItemViewModel(item)));
+                        navigator.goTo(new FeedItemFragment(new FeedItemViewModel(item)), true);
                     }
                 }
             });
@@ -105,7 +105,6 @@ public class FeedFragment extends BaseFragment<FeedFragmentViewModel> {
             photoAttachmentImg.setVisibility(getPhotoAttachmentVisibility() ? View.VISIBLE : View.GONE);
             Glide.with(photoAttachmentImg.getContext())
                     .load(getPhotoAttachmentVisibility() ? item.getPhotoAttachmentList().get(0).getUrl() : "")
-                    .apply(RequestOptions.circleCropTransform())
                     .into(photoAttachmentImg);
             commentsCount.setText("" + item.getCommentsCount());
             likesCount.setText("" + item.getLikesCount());
