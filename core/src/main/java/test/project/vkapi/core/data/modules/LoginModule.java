@@ -21,12 +21,12 @@ public class LoginModule {
         userManager.login(token);
     }
 
-    public boolean isLoggedIn() {
-        return userManager.isAuthorized();
-    }
-
     public Observable<User> user() {
         return userRepository.getUser();
+    }
+
+    public Observable<Boolean> isSignedIn() {
+        return userManager.isSignedIn();
     }
 
     public void logout() {

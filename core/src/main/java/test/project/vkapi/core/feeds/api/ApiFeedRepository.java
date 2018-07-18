@@ -10,14 +10,17 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.ReplaySubject;
+import io.reactivex.subjects.Subject;
 import test.project.vkapi.core.api.VkApi;
+import test.project.vkapi.core.feeds.FeedRepository;
+import test.project.vkapi.core.feeds.FeedStorage;
 import test.project.vkapi.core.feeds.api.models.FeedItem;
 import test.project.vkapi.core.feeds.api.models.FeedList;
-import test.project.vkapi.core.feeds.api.models.PostInfoSource;
+import test.project.vkapi.core.feeds.api.models.FeedResponse;
 import test.project.vkapi.core.feeds.api.models.PostSource;
 import test.project.vkapi.core.feeds.api.models.attachments.AudioItem;
 import test.project.vkapi.core.feeds.api.models.attachments.LinkItem;
@@ -25,9 +28,6 @@ import test.project.vkapi.core.feeds.api.models.attachments.PhotoItem;
 import test.project.vkapi.core.feeds.api.models.attachments.SizesItem;
 import test.project.vkapi.core.feeds.api.models.attachments.VideoItem;
 import test.project.vkapi.core.feeds.models.Feed;
-import test.project.vkapi.core.feeds.FeedStorage;
-import test.project.vkapi.core.feeds.api.models.FeedResponse;
-import test.project.vkapi.core.feeds.FeedRepository;
 import test.project.vkapi.core.feeds.models.FeedAudioAttachment;
 import test.project.vkapi.core.feeds.models.FeedLinkAttachment;
 import test.project.vkapi.core.feeds.models.FeedPhotoAttachment;
@@ -37,25 +37,30 @@ import test.project.vkapi.core.user.UserManager;
 public class ApiFeedRepository implements FeedRepository {
 
     private final VkApi api;
-    private final UserManager userManager;
     private final ModelMapper mapper;
 
     private final FeedRepository dbRepository;
     private final FeedStorage feedStorage;
 
+    private Subject<List<Feed>> feed = ReplaySubject.create();
+
     @Inject
     public ApiFeedRepository(VkApi api, UserManager userManager, ModelMapper mapper, @Named("DB") FeedRepository localDbRepository, FeedStorage feedStorage) {
         this.api = api;
-        this.userManager = userManager;
         this.mapper = mapper;
         this.dbRepository = localDbRepository;
         this.feedStorage = feedStorage;
+        userManager.getToken().subscribe(new Consumer<String>() {
+            @Override
+            public void accept(String token) throws Exception {
+                feed.onNext(loadFeed(token));
+            }
+        });
     }
 
-    @Override
-    public Observable<List<Feed>> getFeed() {
+    private List<Feed> loadFeed(String token) {
         return api
-                .getFeed(userManager.getToken(), "5.77", 100, "post")
+                .getFeed(token, "5.77", 100, "post")
                 .subscribeOn(Schedulers.io())
                 .map(new Function<FeedResponse, FeedList>() {
                     @Override
@@ -117,6 +122,12 @@ public class ApiFeedRepository implements FeedRepository {
                 })
                 .toObservable()
                 //.mergeWith(dbRepository.getFeed())
-                .distinct();
+                .distinct()
+                .blockingFirst();
+    }
+
+    @Override
+    public Observable<List<Feed>> getFeed() {
+        return feed;
     }
 }

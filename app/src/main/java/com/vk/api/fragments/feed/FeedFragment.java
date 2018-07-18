@@ -48,10 +48,10 @@ public class FeedFragment extends BaseFragment<FeedFragmentViewModel> {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(!AppData.auth().isLoggedIn()) {
+        /*if(!AppData.auth().isLoggedIn()) {
             getNavigator().goTo(new LoginFragment(), false);
             return;
-        }
+        }*/
 
         feedListView = view.findViewById(R.id.feed_recycler);
         adapter = new FeedAdapter(getNavigator());

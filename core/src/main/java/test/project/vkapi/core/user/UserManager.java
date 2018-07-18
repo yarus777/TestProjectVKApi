@@ -1,49 +1,55 @@
 package test.project.vkapi.core.user;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
 import android.webkit.CookieManager;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
 import test.project.vkapi.core.storage.DataStorage;
 
 @Singleton
-public class UserManager extends BaseObservable{
+public class UserManager {
     private static final String TOKEN = "token";
-
-    private String token;
-    private final DataStorage dataStorage;
+    private Subject<String> token = BehaviorSubject.create();
+    private Subject<Boolean> isSignedIn = BehaviorSubject.create();
 
     @Inject
-    public UserManager(DataStorage dataStorage) {
-        token = dataStorage.get(TOKEN);
-        this.dataStorage = dataStorage;
+    public UserManager(final DataStorage dataStorage) {
+        token.subscribe(
+                new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        dataStorage.save(TOKEN, s);
+                        isSignedIn.onNext(s != null && !s.isEmpty());
+                    }
+                }
+        );
+        String t = dataStorage.get(TOKEN);
+        if(t != null) {
+            token.onNext(t);
+        } else {
+            isSignedIn.onNext(false);
+        }
     }
 
-
-    public String getToken() {
+    public Observable<String> getToken() {
         return token;
     }
 
-    public void login(String token) {
-        this.token = token;
-        save();
+    public Observable<Boolean> isSignedIn() {
+        return isSignedIn;
     }
 
-    @Bindable
-    public boolean isAuthorized() {
-        return token != null && !token.isEmpty();
+    public void login(String token) {
+        this.token.onNext(token);
     }
 
     public void logout() {
-        token = null;
+        token.onNext(null);
         CookieManager.getInstance().removeAllCookies(null);
-        save();
-    }
-
-    private void save() {
-        dataStorage.save(TOKEN, token);
     }
 }

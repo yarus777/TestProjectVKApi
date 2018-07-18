@@ -2,6 +2,7 @@ package com.vk.api.activities;
 
 import android.arch.lifecycle.Observer;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -23,7 +24,7 @@ import com.vk.api.fragments.feed.FeedFragment;
 import com.vk.api.fragments.login.LoginFragment;
 import com.vk.api.navigation.BackStack;
 
-import javax.inject.Inject;
+import test.project.vkapi.core.user.models.User;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,16 +36,16 @@ public class MainActivity extends BaseActivity
 
     private BackStack backStack;
 
-    //@Inject
-    //MainActivityViewModel mainViewModel;
+    private MainActivityViewModel model;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        model = new MainActivityViewModel();
+
         backStack = new BackStack();
-        getAppComponent().inject(this);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,25 +56,27 @@ public class MainActivity extends BaseActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         final ImageView imageView = findViewById(R.id.userpic);
         final TextView userNameView = findViewById(R.id.username);
 
-        /*mainViewModel.getImageUrl().observe(this, new Observer<String>() {
+        model.getUser().observe(this, new Observer<User>() {
             @Override
-            public void onChanged(@Nullable String url) {
-                loadImage(imageView, url);
+            public void onChanged(@NonNull User user) {
+                loadImage(imageView, user.getPhoto());
+                userNameView.setText(user.getFirstName());
             }
         });
 
-        mainViewModel.getUserName().observe(this, new Observer<String>() {
+        model.isSignedIn().observe(this, new Observer<Boolean>() {
             @Override
-            public void onChanged(@Nullable String username) {
-                userNameView.setText(username);
+            public void onChanged(@Nullable Boolean isSignedIn) {
+                if(!isSignedIn) {
+                    goTo(new LoginFragment(), false);
+                } else {
+                    goTo(new FeedFragment(), false);
+                }
             }
-        });*/
-        goTo(new LoginFragment(), false);
-
+        });
     }
 
     @Override
@@ -94,7 +97,7 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_about) {
             goTo(new AboutFragment(), true);
         } else if (id == R.id.nav_exit) {
-            //mainViewModel.logout();
+            model.logout();
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -144,8 +147,8 @@ public class MainActivity extends BaseActivity
     }
 
     public void goTo(BaseFragment f, boolean isVisible) {
-        setDrawerLocked(isVisible);
-        setToolbarVisibility(isVisible);
+        //setDrawerLocked(isVisible);
+        //setToolbarVisibility(isVisible);
         switchFragment(f, "");
         backStack.add(f);
     }
