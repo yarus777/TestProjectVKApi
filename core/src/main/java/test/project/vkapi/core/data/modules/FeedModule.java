@@ -7,6 +7,7 @@ import javax.inject.Named;
 
 import io.reactivex.Observable;
 import test.project.vkapi.core.feeds.FeedRepository;
+import test.project.vkapi.core.feeds.api.ApiFeedRepository;
 import test.project.vkapi.core.feeds.models.Feed;
 
 public class FeedModule {
@@ -17,7 +18,11 @@ public class FeedModule {
         apiFeedRepository = feedRepository;
     }
 
-    public Observable<List<Feed>> getFeeds() {
-        return apiFeedRepository.getFeed();
+    /*public Observable<List<Feed>> getFeeds(String token) {
+        return apiFeedRepository.getFeed(token);
+    }*/
+
+    public FeedRepository repository() {
+        return apiFeedRepository;
     }
 }

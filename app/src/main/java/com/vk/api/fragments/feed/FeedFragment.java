@@ -1,9 +1,11 @@
 package com.vk.api.fragments.feed;
 
 import android.arch.lifecycle.Observer;
+import android.arch.paging.PagedList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,13 +20,10 @@ import com.vk.api.activities.MainActivity;
 import com.vk.api.adapters.FeedAdapter;
 import com.vk.api.fragments.BaseFragment;
 import com.vk.api.fragments.feed.item.FeedItemFragment;
-import com.vk.api.fragments.login.LoginFragment;
 import com.vk.api.views.feed.FeedItemViewModel;
 
 import java.util.List;
 
-import test.project.vkapi.core.data.AppData;
-import test.project.vkapi.core.data.modules.LoginModule;
 import test.project.vkapi.core.feeds.models.Feed;
 
 
@@ -48,21 +47,27 @@ public class FeedFragment extends BaseFragment<FeedFragmentViewModel> {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        /*if(!AppData.auth().isLoggedIn()) {
-            getNavigator().goTo(new LoginFragment(), false);
-            return;
-        }*/
-
         feedListView = view.findViewById(R.id.feed_recycler);
-        adapter = new FeedAdapter(getNavigator());
-        feedListView.setAdapter(adapter);
-
-        getViewModel().feeds().observe(this, new Observer<List<Feed>>() {
+        adapter = new FeedAdapter(getNavigator(), new DiffUtil.ItemCallback<Feed>() {
             @Override
-            public void onChanged(@Nullable List<Feed> feeds) {
-                adapter.setItems(feeds);
+            public boolean areItemsTheSame(Feed oldItem, Feed newItem) {
+                return oldItem.getId() == newItem.getId();
+            }
+
+            @Override
+            public boolean areContentsTheSame(Feed oldItem, Feed newItem) {
+                return oldItem.equals(newItem);
             }
         });
+        feedListView.setAdapter(adapter);
+
+        adapter.submitList(getViewModel().getFeeds());
+        /*getViewModel().getFeeds().observe(this, new Observer<PagedList<Feed>>() {
+            @Override
+            public void onChanged(PagedList<Feed> feeds) {
+                adapter.setItems(feeds);
+            }
+        });*/
     }
 
     public static class FeedHolder extends RecyclerView.ViewHolder {

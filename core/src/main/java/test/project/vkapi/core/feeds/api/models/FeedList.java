@@ -9,6 +9,9 @@ public class FeedList {
     @SerializedName("items")
     private List<FeedItem> items;
 
+    @SerializedName("next_from")
+    public String nextFrom;
+
     private HashMap<String, PostSource> infoItems;
 
     public List<FeedItem> getItems() {

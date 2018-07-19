@@ -13,8 +13,6 @@ import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import io.reactivex.subjects.ReplaySubject;
-import io.reactivex.subjects.Subject;
 import test.project.vkapi.core.api.VkApi;
 import test.project.vkapi.core.feeds.FeedRepository;
 import test.project.vkapi.core.feeds.FeedStorage;
@@ -36,31 +34,27 @@ import test.project.vkapi.core.user.UserManager;
 
 public class ApiFeedRepository implements FeedRepository {
 
+
     private final VkApi api;
     private final ModelMapper mapper;
 
-    private final FeedRepository dbRepository;
+    //private final FeedRepository dbRepository;
     private final FeedStorage feedStorage;
-
-    private Subject<List<Feed>> feed = ReplaySubject.create();
+    private final UserManager userManager;
 
     @Inject
-    public ApiFeedRepository(VkApi api, UserManager userManager, ModelMapper mapper, @Named("DB") FeedRepository localDbRepository, FeedStorage feedStorage) {
+    public ApiFeedRepository(VkApi api, ModelMapper mapper, /*@Named("DB") FeedRepository localDbRepository,*/ FeedStorage feedStorage, UserManager userManager) {
         this.api = api;
         this.mapper = mapper;
-        this.dbRepository = localDbRepository;
+        //this.dbRepository = localDbRepository;
         this.feedStorage = feedStorage;
-        userManager.getToken().subscribe(new Consumer<String>() {
-            @Override
-            public void accept(String token) throws Exception {
-                feed.onNext(loadFeed(token));
-            }
-        });
+        this.userManager = userManager;
     }
 
-    private List<Feed> loadFeed(String token) {
+    @Override
+    public Observable<FeedPageData> getFeed(String token, String startFrom, int rows) {
         return api
-                .getFeed(token, "5.77", 100, "post")
+                .getFeed(token, "5.77", startFrom, rows, "post")
                 .subscribeOn(Schedulers.io())
                 .map(new Function<FeedResponse, FeedList>() {
                     @Override
@@ -68,9 +62,9 @@ public class ApiFeedRepository implements FeedRepository {
                         return feedResponse.getFeedList();
                     }
                 })
-                .map(new Function<FeedList, List<Feed>>() {
+                .map(new Function<FeedList, FeedPageData>() {
                     @Override
-                    public List<Feed> apply(FeedList feedList) throws Exception {
+                    public FeedPageData apply(FeedList feedList) throws Exception {
                         List<Feed> feeds = new ArrayList<>();
                         List<FeedItem> responseFeeds = feedList.getItems();
                         HashMap<String, PostSource> sourceHashMap = feedList.getInfoItems();
@@ -111,23 +105,18 @@ public class ApiFeedRepository implements FeedRepository {
                             feed.setSource(sourceHashMap.get(feedItem.getSourceId()));
                             feeds.add(feed);
                         }
-                        return feeds;
+                        return new FeedPageData(feeds, feedList.nextFrom);
                     }
                 })
-                .doOnSuccess(new Consumer<List<Feed>>() {
+                .doOnSuccess(new Consumer<FeedPageData>() {
                     @Override
-                    public void accept(List<Feed> feeds) throws Exception {
-                        feedStorage.save(feeds);
+                    public void accept(FeedPageData feedsData) throws Exception {
+                        feedStorage.save(feedsData.feeds);
                     }
                 })
                 .toObservable()
                 //.mergeWith(dbRepository.getFeed())
-                .distinct()
-                .blockingFirst();
+                .distinct();
     }
 
-    @Override
-    public Observable<List<Feed>> getFeed() {
-        return feed;
-    }
 }

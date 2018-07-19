@@ -1,6 +1,7 @@
 package com.vk.api.adapters;
 
-import android.support.v7.widget.RecyclerView;
+import android.arch.paging.PagedListAdapter;
+import android.support.v7.util.DiffUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,18 +10,14 @@ import com.vk.api.R;
 import com.vk.api.activities.MainActivity;
 import com.vk.api.fragments.feed.FeedFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import test.project.vkapi.core.feeds.models.Feed;
 
 
-public class FeedAdapter extends RecyclerView.Adapter<FeedFragment.FeedHolder> {
-
+public class FeedAdapter extends PagedListAdapter<Feed, FeedFragment.FeedHolder> {
     private final MainActivity navigator;
-    private List<Feed> items = new ArrayList<>();
 
-    public FeedAdapter(MainActivity navigator) {
+    public FeedAdapter(MainActivity navigator, DiffUtil.ItemCallback<Feed> callback) {
+        super(callback);
         this.navigator = navigator;
     }
 
@@ -32,18 +29,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedFragment.FeedHolder> {
 
     @Override
     public void onBindViewHolder(FeedFragment.FeedHolder holder, int position) {
-        holder.bind(items.get(position));
+        holder.bind(getItem(position));
     }
-
-    @Override
-    public int getItemCount() {
-        return items.size();
-    }
-
-    public void setItems(List<Feed> feeds) {
-        items.clear();
-        items.addAll(feeds);
-        notifyDataSetChanged();
-    }
-
 }

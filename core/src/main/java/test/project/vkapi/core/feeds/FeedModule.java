@@ -15,8 +15,6 @@ import test.project.vkapi.core.feeds.db.PostSourceRepository;
 import test.project.vkapi.core.feeds.db.models.AttachmentsDAO;
 import test.project.vkapi.core.feeds.db.models.FeedDAO;
 import test.project.vkapi.core.feeds.db.models.PostSourceDAO;
-import test.project.vkapi.core.user.UserRepository;
-import test.project.vkapi.core.user.api.ApiUserRepository;
 
 @Module
 public class FeedModule {
@@ -50,12 +48,12 @@ public class FeedModule {
         return new PostSourceRepository(dao, mapper);
     }
 
-    @Provides
+   /* @Provides
     @Singleton
     @Named("DB")
     FeedRepository provideDbRepository(LocalFeedRepository feedRepository) {
         return feedRepository;
-    }
+    }*/
 
     @Provides
     @Singleton

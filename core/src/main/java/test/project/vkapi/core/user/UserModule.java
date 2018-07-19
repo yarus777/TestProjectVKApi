@@ -5,7 +5,6 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import test.project.vkapi.core.db.AppDatabase;
-import test.project.vkapi.core.user.api.ApiUserRepository;
 import test.project.vkapi.core.user.db.LocalUserRepository;
 import test.project.vkapi.core.user.db.models.UserDAO;
 

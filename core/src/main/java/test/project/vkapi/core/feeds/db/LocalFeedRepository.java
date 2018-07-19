@@ -12,20 +12,17 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import test.project.vkapi.core.feeds.FeedRepository;
 import test.project.vkapi.core.feeds.FeedStorage;
-import test.project.vkapi.core.feeds.api.models.PostInfoSource;
+import test.project.vkapi.core.feeds.api.FeedPageData;
 import test.project.vkapi.core.feeds.api.models.PostSource;
 import test.project.vkapi.core.feeds.db.models.FeedDAO;
 import test.project.vkapi.core.feeds.db.models.FeedDBModel;
-import test.project.vkapi.core.feeds.db.models.LinkAttachmentsModel;
-import test.project.vkapi.core.feeds.db.models.PhotoAttachmentsModel;
-import test.project.vkapi.core.feeds.db.models.PostSourceModel;
 import test.project.vkapi.core.feeds.models.Feed;
 import test.project.vkapi.core.feeds.models.FeedAudioAttachment;
 import test.project.vkapi.core.feeds.models.FeedLinkAttachment;
 import test.project.vkapi.core.feeds.models.FeedPhotoAttachment;
 import test.project.vkapi.core.feeds.models.FeedVideoAttachment;
 
-public class LocalFeedRepository implements FeedRepository, FeedStorage {
+public class LocalFeedRepository implements /*FeedRepository,*/ FeedStorage {
 
     private final FeedDAO dao;
     private final ModelMapper mapper;
@@ -39,9 +36,9 @@ public class LocalFeedRepository implements FeedRepository, FeedStorage {
         this.attachmentsRepository = attachmentsRepository;
         this.postSourceRepository = postSourceRepository;
     }
-
+/*
     @Override
-    public Observable<List<Feed>> getFeed() {
+    public Observable<FeedPageData> getFeed(String token, String from, int rows) {
         return dao.getAll().map(new Function<List<FeedDBModel>, List<Feed>>() {
             @Override
             public List<Feed> apply(List<FeedDBModel> feedDBModels) throws Exception {
@@ -95,7 +92,7 @@ public class LocalFeedRepository implements FeedRepository, FeedStorage {
                 return feeds;
             }
         }).toObservable();
-    }
+    }*/
 
     @Override
     public void save(List<Feed> feeds) {

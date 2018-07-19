@@ -1,40 +1,45 @@
 package com.vk.api.fragments.feed;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import android.arch.paging.LivePagedListBuilder;
+import android.arch.paging.PagedList;
 
 import com.vk.api.fragments.BaseViewModel;
 
-import java.util.List;
+import java.util.concurrent.Executors;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import test.project.vkapi.core.data.AppData;
+import test.project.vkapi.core.feeds.api.DataSourceFactory;
+import test.project.vkapi.core.feeds.api.FeedDataSource;
 import test.project.vkapi.core.feeds.models.Feed;
 
 public class FeedFragmentViewModel extends BaseViewModel {
-
-    private MutableLiveData<List<Feed>> feeds = new MutableLiveData<>();
+    public static final int ROWS_PER_PAGE = 10;
+    private PagedList<Feed> feeds;
+    //private DataSourceFactory sourceFactory;
 
     public FeedFragmentViewModel() {
-        AppData.feed().getFeeds().
-                observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                new Consumer<List<Feed>>() {
-                    @Override
-                    public void accept(List<Feed> feedsResponse) throws Exception {
-                        feeds.setValue(feedsResponse);
-                    }
-                },
-                new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        feeds.setValue(null);
-                    }
-                });
+        PagedList.Config config = new PagedList.Config.Builder()
+                .setEnablePlaceholders(false)
+                .setPageSize(ROWS_PER_PAGE)
+                .setInitialLoadSizeHint(ROWS_PER_PAGE)
+                .setEnablePlaceholders(false)
+                .build();
+
+        /*sourceFactory = new DataSourceFactory(
+                AppData.feed().repository(),
+                AppData.auth().manager()
+        );
+        feeds = new LivePagedListBuilder<>(sourceFactory, config).build();*/
+
+        feeds = new PagedList.Builder<>(
+                new FeedDataSource(AppData.feed().repository(), AppData.auth().manager()),
+                config)
+                .setBackgroundThreadExecutor(Executors.newSingleThreadExecutor())
+                .build();
     }
 
-    public LiveData<List<Feed>> feeds() {
+    public PagedList<Feed> getFeeds() {
         return feeds;
     }
 }
